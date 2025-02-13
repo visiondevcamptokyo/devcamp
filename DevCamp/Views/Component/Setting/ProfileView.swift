@@ -32,19 +32,19 @@ struct ProfileView: View {
                                         .scaledToFit()
                                         .frame(width: 200, height: 200)
                                 case .failure(_):
-                                    Text("画像がありません")
+                                    Text("No Image")
                                         .frame(width: 200, height: 200)
                                         .background(Color.gray.opacity(0.2))
                                         .cornerRadius(10)
                                 @unknown default:
-                                    Text("不明な状態です")
+                                    Text("Unknown status")
                                         .frame(width: 200, height: 200)
                                         .background(Color.gray.opacity(0.2))
                                         .cornerRadius(10)
                             }
                         }
                     } else {
-                        Text("画像がありません")
+                        Text("No Image")
                             .frame(width: 200, height: 200)
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(10)
@@ -124,7 +124,7 @@ struct ProfileView: View {
         .alert("Success", isPresented: $showSuccessAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("メタデータの保存に成功しました。")
+            Text("Metadata was successfully saved.")
         }
     }
     
