@@ -21,7 +21,7 @@ struct ContentView: View {
             }
         }
         .task {
-            // MARK: Shareplayのセッションが起動されているか否かをチェックする
+            // MARK: Check whether or not a Shareplay session is activated
             for await session in DevCampActivity.sessions() {
                 await groupActivityManager.configureGroupSession(session: session, appState: appState)
             }
