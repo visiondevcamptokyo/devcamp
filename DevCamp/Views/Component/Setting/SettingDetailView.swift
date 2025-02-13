@@ -16,7 +16,7 @@ struct SettingDetailView: View {
             Nip29RelayView()
             
         default:
-            Text("設定を選択してください")
+            Text("Please select a setting")
                 .foregroundColor(.secondary)
         }
     }
