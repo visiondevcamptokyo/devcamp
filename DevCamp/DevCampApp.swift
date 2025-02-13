@@ -45,9 +45,9 @@ struct DevCampApp: App {
                         guard let selectedOwnerAccount = appState.selectedOwnerAccount else { return }
                         guard let selectedGroup = appState.selectedGroup else { return }
 
-                        //Nostrのグループから抜ける
+                        // Exit from Nostr group
                         appState.leaveGroup(ownerAccount: selectedOwnerAccount, group: selectedGroup)
-                        // グループメンバーから自分を削除する
+                        // Remove yourself from group membership
                         appState.allGroupMember.removeAll { member in
                             member.publicKey == selectedOwnerAccount.publicKey && member.groupId == selectedGroup.id
                         }

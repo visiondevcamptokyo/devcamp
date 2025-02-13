@@ -160,7 +160,7 @@ struct SessionLinkView: View {
                 groupLink = fetchAdminUserMetadata().first?.facetime ?? ""
             }
         }
-        // Relay からOKが返ってきたら、シートを閉じる
+        // If Relay returns OK, close the sheet.
         .onReceive(appState.$shouldCloseEditSessionLinkSheet) { shouldClose in
             if shouldClose {
                 sheetDetail = nil

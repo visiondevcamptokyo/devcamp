@@ -73,7 +73,7 @@ struct KeyView: View {
                                     let context = LAContext()
                                     var error: NSError?
                                     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                                        let reason = "プライベートキーを表示するために認証してください。"
+                                        let reason = "Authenticate to view your private key."
                                         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                                             DispatchQueue.main.async {
                                                 if success {

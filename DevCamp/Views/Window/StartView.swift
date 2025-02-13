@@ -23,7 +23,6 @@ struct StartView: View {
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 8) {
                     
-                    // タイトル部分
                     VStack(spacing: 2) {
                         Text("Welcome to VisionDevCamp Tokyo!")
                             .font(.system(size: 56, weight: .black))
@@ -37,7 +36,6 @@ struct StartView: View {
                     }
                     .frame(maxWidth: .infinity)
                     
-                    // サインイン用リンク
                     LazyVStack {
                         NavigationLink("Signin with Nostr Account", value: 0)
                             .buttonStyle(.borderedProminent)
@@ -46,20 +44,16 @@ struct StartView: View {
                     .padding(.horizontal)
                     .padding(.bottom)
                     
-                    // アカウント作成用ボタン
                     LazyVStack {
                         Button(action: {
                             Task {
-                                // OwnerAccount の作成処理（タップ時に実行）
                                 if let ownerAccount = OwnerAccount.createNew() {
                                     ownerAccount.selected = true
                                     modelContext.insert(ownerAccount)
                                     appState.selectedOwnerAccount = ownerAccount
                                     
-                                    // リレーの追加などの非同期処理を実行
                                     await addRelay()
                                     
-                                    // アカウント作成が完了したら SignupView へ遷移
                                     navigationPath.append(1)
                                 } else {
                                     print("Failed to create OwnerAccount")

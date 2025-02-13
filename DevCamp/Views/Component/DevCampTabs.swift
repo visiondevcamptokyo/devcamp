@@ -12,7 +12,7 @@ struct DevCampTabs: View {
                 }
 //            ChatGroupView()
 //                .tabItem {
-//                    Label("【開発用】グループリスト", systemImage: "person.3")
+//                    Label("[For Development] Group List", systemImage: "person.3")
 //                }
 //            TimeLineView()
 //                .tabItem {

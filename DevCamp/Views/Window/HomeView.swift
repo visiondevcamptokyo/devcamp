@@ -17,6 +17,7 @@ struct HomeView: View {
                     Spacer()
                     HStack {
                         TextField("Search", text: $searchText)
+                            .foregroundColor(.white)
                             .padding()
                             .background(Color.gray.opacity(0.4))
                             .cornerRadius(32)
@@ -60,7 +61,7 @@ struct HomeView: View {
                         .font(.title2.bold())
                         .padding(.leading, 16)
                     
-                    GroupListView(groups: Array(appState.allChatGroup.suffix(20)), groupActivityManager: groupActivityManager)
+                    GroupListView(groups: filteredAllGroups, groupActivityManager: groupActivityManager)
                     
                     Spacer().frame(height: 30)
                     
@@ -68,13 +69,36 @@ struct HomeView: View {
                         .font(.title2.bold())
                         .padding(.leading, 16)
                     
-                    GroupListView(groups: appState.allChatGroup.filter({$0.isMember || $0.isAdmin }), groupActivityManager: groupActivityManager)
+                    GroupListView(groups: filteredOwnedGroups, groupActivityManager: groupActivityManager)
                     
                     Spacer()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(16)
+        }
+    }
+    
+    // To get search results for allChatGroup
+    private var filteredAllGroups: [ChatGroupMetadata] {
+        if searchText.isEmpty {
+            return Array(appState.allChatGroup)
+        } else {
+            return appState.allChatGroup.filter { group in
+                group.name?.localizedCaseInsensitiveContains(searchText) ?? false
+            }
+        }
+    }
+
+    // further narrow down the search results to groups to which you belong
+    private var filteredOwnedGroups: [ChatGroupMetadata] {
+        let ownedGroups = appState.allChatGroup.filter { $0.isMember || $0.isAdmin }
+        if searchText.isEmpty {
+            return ownedGroups
+        } else {
+            return ownedGroups.filter { group in
+                group.name?.localizedCaseInsensitiveContains(searchText) ?? false
+            }
         }
     }
 }
