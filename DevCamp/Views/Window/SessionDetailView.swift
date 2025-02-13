@@ -71,16 +71,16 @@ struct SessionDetailView: View {
 
                 
                 HStack(spacing: 20) {
-                    // MARK: すでにShareplayセッションが確立されている状態
+                    // MARK: When a SharePlay session has already been established
                     if groupActivityManager.isSharePlaying {
                         Button(action: {
                             Task {
                                 // SharePlayセッションを終了する
                                 let didActivate = await groupActivityManager.endSession()
                                 if didActivate {
-                                    sharePlayStatus = "セッションから離脱しました。"
+                                    sharePlayStatus = "You have withdrawn from the session."
                                 } else {
-                                    sharePlayStatus = "セッションの離脱に失敗しました。"
+                                    sharePlayStatus = "Failed to leave session."
                                 }
                             }
                         }) {
@@ -88,11 +88,11 @@ struct SessionDetailView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }.tint(.red)
-                    // MARK: Shareplayセッションを確立していない場合
+                    // MARK: When a Shareplay session has not been established
                     } else {
                         Button(action: {
                             Task{
-                                // MARK: Adminが複数存在するという状態を省く必要がある
+                                // TODO: We need to omit the condition that there are multiple
                                 let faceTimeLink = fetchAdminUserMetadata().first?.facetime ?? ""
                                 if let url = URL(string: faceTimeLink) {
                                     await UIApplication.shared.open(url)
@@ -111,16 +111,16 @@ struct SessionDetailView: View {
                                 switch activationResult {
                                     case .activationPreferred:
                                         await groupActivityManager.startSession()
-                                        sharePlayStatus = "セッションに参加中です"
+                                        sharePlayStatus = "You are in session."
 
                                     case .activationDisabled:
 
-                                        sharePlayStatus = "SharePlayは利用できません"
+                                        sharePlayStatus = "SharePlay is not available"
                                     
                                     case .cancelled:
-                                        sharePlayStatus = "セッションの開始をキャンセルしました"
+                                        sharePlayStatus = "SharePlay is not available"
                                     @unknown default:
-                                        sharePlayStatus = "予期しないエラーが発生しました"
+                                        sharePlayStatus = "An unexpected error has occurred."
                                 }
                             }
                         }) {
@@ -242,7 +242,7 @@ struct SessionDetailView: View {
         .onAppear {
             let faceTimeLink = fetchAdminUserMetadata().first?.facetime
             if faceTimeLink == nil || faceTimeLink?.isEmpty == true {
-                sharePlayStatus = "Facetimeリンクが設定されていません。"
+                sharePlayStatus = "Facetime link is not set."
             } else {
                 sharePlayStatus = faceTimeLink!
             }
