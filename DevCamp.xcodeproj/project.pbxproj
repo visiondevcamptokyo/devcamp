@@ -1,0 +1,515 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		911549C82D52216800489C30 /* NostrClient in Frameworks */ = {isa = PBXBuildFile; productRef = 911549C72D52216800489C30 /* NostrClient */; };
+		911549CB2D5221C300489C30 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 911549CA2D5221C300489C30 /* KeychainAccess */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		911549A52D521C6E00489C30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 911549812D521C6D00489C30 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 911549882D521C6D00489C30;
+			remoteInfo = Momiji;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		911549892D521C6D00489C30 /* DevCamp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DevCamp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9115498D2D521C6D00489C30 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
+		911549A42D521C6E00489C30 /* DevCampTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DevCampTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		91154A5A2D523E8600489C30 /* Exceptions for "DevCamp" folder in "DevCamp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = 911549882D521C6D00489C30 /* DevCamp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9115498B2D521C6D00489C30 /* DevCamp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				91154A5A2D523E8600489C30 /* Exceptions for "DevCamp" folder in "DevCamp" target */,
+			);
+			path = DevCamp;
+			sourceTree = "<group>";
+		};
+		911549A72D521C6E00489C30 /* DevCampTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DevCampTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		911549862D521C6D00489C30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				911549C82D52216800489C30 /* NostrClient in Frameworks */,
+				911549CB2D5221C300489C30 /* KeychainAccess in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		911549A12D521C6E00489C30 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		911549802D521C6D00489C30 = {
+			isa = PBXGroup;
+			children = (
+				9115498B2D521C6D00489C30 /* DevCamp */,
+				9115498C2D521C6D00489C30 /* Packages */,
+				911549A72D521C6E00489C30 /* DevCampTests */,
+				9115498A2D521C6D00489C30 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9115498A2D521C6D00489C30 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				911549892D521C6D00489C30 /* DevCamp.app */,
+				911549A42D521C6E00489C30 /* DevCampTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9115498C2D521C6D00489C30 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				9115498D2D521C6D00489C30 /* RealityKitContent */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		911549882D521C6D00489C30 /* DevCamp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 911549AB2D521C6E00489C30 /* Build configuration list for PBXNativeTarget "DevCamp" */;
+			buildPhases = (
+				911549852D521C6D00489C30 /* Sources */,
+				911549862D521C6D00489C30 /* Frameworks */,
+				911549872D521C6D00489C30 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9115498B2D521C6D00489C30 /* DevCamp */,
+			);
+			name = DevCamp;
+			packageProductDependencies = (
+				911549C72D52216800489C30 /* NostrClient */,
+				911549CA2D5221C300489C30 /* KeychainAccess */,
+			);
+			productName = Momiji;
+			productReference = 911549892D521C6D00489C30 /* DevCamp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		911549A32D521C6E00489C30 /* DevCampTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 911549B02D521C6E00489C30 /* Build configuration list for PBXNativeTarget "DevCampTests" */;
+			buildPhases = (
+				911549A02D521C6E00489C30 /* Sources */,
+				911549A12D521C6E00489C30 /* Frameworks */,
+				911549A22D521C6E00489C30 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				911549A62D521C6E00489C30 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				911549A72D521C6E00489C30 /* DevCampTests */,
+			);
+			name = DevCampTests;
+			packageProductDependencies = (
+			);
+			productName = MomijiTests;
+			productReference = 911549A42D521C6E00489C30 /* DevCampTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		911549812D521C6D00489C30 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					911549882D521C6D00489C30 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					911549A32D521C6E00489C30 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 911549882D521C6D00489C30;
+					};
+				};
+			};
+			buildConfigurationList = 911549842D521C6D00489C30 /* Build configuration list for PBXProject "DevCamp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 911549802D521C6D00489C30;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */,
+				911549C92D5221C300489C30 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9115498A2D521C6D00489C30 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				911549882D521C6D00489C30 /* DevCamp */,
+				911549A32D521C6E00489C30 /* DevCampTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		911549872D521C6D00489C30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		911549A22D521C6E00489C30 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		911549852D521C6D00489C30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		911549A02D521C6E00489C30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		911549A62D521C6E00489C30 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 911549882D521C6D00489C30 /* DevCamp */;
+			targetProxy = 911549A52D521C6E00489C30 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		911549AC2D521C6E00489C30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DevCamp/Preview Content\"";
+				DEVELOPMENT_TEAM = F53VTJ7REG;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = social.nostr.visionos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Debug;
+		};
+		911549AD2D521C6E00489C30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DevCamp/Preview Content\"";
+				DEVELOPMENT_TEAM = F53VTJ7REG;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "$(TARGET_NAME)/Resources/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = social.nostr.visionos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Release;
+		};
+		911549AE2D521C6E00489C30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		911549AF2D521C6E00489C30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		911549B12D521C6E00489C30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F53VTJ7REG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.momiji.MomijiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DevCamp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DevCamp";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		911549B22D521C6E00489C30 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F53VTJ7REG;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.momiji.MomijiTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DevCamp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DevCamp";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		911549842D521C6D00489C30 /* Build configuration list for PBXProject "DevCamp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				911549AE2D521C6E00489C30 /* Debug */,
+				911549AF2D521C6E00489C30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		911549AB2D521C6E00489C30 /* Build configuration list for PBXNativeTarget "DevCamp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				911549AC2D521C6E00489C30 /* Debug */,
+				911549AD2D521C6E00489C30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		911549B02D521C6E00489C30 /* Build configuration list for PBXNativeTarget "DevCampTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				911549B12D521C6E00489C30 /* Debug */,
+				911549B22D521C6E00489C30 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Galaxoid-Labs/NostrClient.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		911549C92D5221C300489C30 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		911549C72D52216800489C30 /* NostrClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */;
+			productName = NostrClient;
+		};
+		911549CA2D5221C300489C30 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 911549C92D5221C300489C30 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 911549812D521C6D00489C30 /* Project object */;
+}

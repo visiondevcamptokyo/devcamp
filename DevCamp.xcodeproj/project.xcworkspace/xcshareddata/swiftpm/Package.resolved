@@ -1,0 +1,42 @@
+{
+  "originHash" : "fd984874ff8acecd62029c070217dde765e55ef61fedfb9933024cd60e30c0f2",
+  "pins" : [
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
+    {
+      "identity" : "nostr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Galaxoid-Labs/Nostr.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a3f8aa04fc5bd492db126edc721ac9cd3f6fb2f7"
+      }
+    },
+    {
+      "identity" : "nostrclient",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Galaxoid-Labs/NostrClient.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0e0c4fe1339aeae806c9b8eff208386796fb71aa"
+      }
+    },
+    {
+      "identity" : "swift-secp256k1",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/21-DOT-DEV/swift-secp256k1.git",
+      "state" : {
+        "revision" : "9683e8e311c76d8114cd308b697dad2f9fc58fed",
+        "version" : "0.17.0"
+      }
+    }
+  ],
+  "version" : 3
+}
