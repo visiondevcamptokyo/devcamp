@@ -9,7 +9,7 @@ struct MetadataRelayView: View {
     
     @Query private var relays: [Relay]
     var metadataRelays: [Relay] {
-        //TODO: 【ARERT】Metadata用のリレーとGroup用のリレーが一致する可能性はある。その際にエラーとなりかねないので注意
+        //TODO: It is possible that the relay for Metadata and the relay for Group may match. Note that it could be an error in that case.
         relays.filter { !$0.supportsNip29 }
     }
     
