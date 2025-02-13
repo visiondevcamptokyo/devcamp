@@ -54,9 +54,15 @@ struct SessionDetailView: View {
                             .font(.title)
                             .bold()
                     }
-                    Text("By Morinosuke")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    HStack(spacing: 8) {
+                        Text("By")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+
+                        Text(fetchAdminUserMetadata().first?.displayName ?? "")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
                     Text(group.about ?? "")
                         .font(.body)
 
