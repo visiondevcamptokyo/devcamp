@@ -74,7 +74,7 @@ struct GroupCard: View {
         .navigationDestination(isPresented: $isShowingDetail){
             SessionDetailView(group: group, groupActivityManager: groupActivityManager)
         }
-        // MARK: これがないと背景に謎の丸が出てくるので必ず残しておく
+        // MARK: Without it, you'll see a mysterious circle in the background, so be sure to leave it there.
         .buttonStyle(PlainButtonStyle())
     }
     
