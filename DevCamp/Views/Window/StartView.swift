@@ -45,24 +45,8 @@ struct StartView: View {
                     .padding(.bottom)
                     
                     LazyVStack {
-                        Button(action: {
-                            Task {
-                                if let ownerAccount = OwnerAccount.createNew() {
-                                    ownerAccount.selected = true
-                                    modelContext.insert(ownerAccount)
-                                    appState.selectedOwnerAccount = ownerAccount
-                                    
-                                    await addRelay()
-                                    
-                                    navigationPath.append(1)
-                                } else {
-                                    print("Failed to create OwnerAccount")
-                                }
-                            }
-                        }) {
-                            Text("Create an Account")
-                        }
-                        .buttonStyle(.borderedProminent)
+                        NavigationLink("Create an Account", value: 1)
+                            .buttonStyle(.borderedProminent)
                     }
                     .controlSize(.large)
                     .padding(.horizontal)
@@ -83,43 +67,5 @@ struct StartView: View {
                 }
             }
         }
-    }
-    
-    private func addRelay() async {
-        let metadataRelayUrl = "wss://relay.damus.io"
-        let nip29relayUrl = "wss://groups.yugoatobe.com"
-        
-        if let metadataRelay = Relay.createNew(withUrl: metadataRelayUrl) {
-            modelContext.insert(metadataRelay)
-            do {
-                try modelContext.save()
-            } catch {
-                print("Error saving metadataRelay: \(error)")
-            }
-            _ = await metadataRelay.updateRelayInfo()
-            
-            if !metadataRelay.supportsNip1 {
-                print("This relay does not support Nip 1.")
-                modelContext.delete(metadataRelay)
-            }
-        }
-        
-        if let nip29Relay = Relay.createNew(withUrl: nip29relayUrl) {
-            modelContext.insert(nip29Relay)
-            do {
-                try modelContext.save()
-            } catch {
-                print("Error saving nip29Relay: \(error)")
-            }
-            _ = await nip29Relay.updateRelayInfo()
-            
-            if !nip29Relay.supportsNip29 {
-                print("NO NIP 29")
-                modelContext.delete(nip29Relay)
-            }
-        }
-        
-        await appState.setupYourOwnMetadata()
-        await appState.subscribeGroupMetadata()
     }
 }
