@@ -51,10 +51,22 @@ struct SignupView: View {
 
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Username")
-                    TextField("Username", text: $userName)
-                        .textFieldStyle(.roundedBorder)
+                    HStack {
+                        Text("@")
+                            .font(.title3)
+                            .bold()
+                            .foregroundColor(.gray)
+                        TextField("Enter username (without @)", text: $userName)
+                            .textFieldStyle(.roundedBorder)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                    }
+                    .padding(.horizontal, 8)
+                    .frame(height: 44)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(8)
                     Text("Name")
-                    TextField("Name", text: $name)
+                    TextField("Enter name", text: $name)
                         .textFieldStyle(.roundedBorder)
                     Text("About")
                     TextEditor(text: $about)
