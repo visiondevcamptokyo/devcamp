@@ -7,7 +7,6 @@ struct SignupView: View {
     @EnvironmentObject private var appState: AppState
     @Environment(\.modelContext) private var modelContext
     
-    @State private var userName: String = ""
     @State private var name: String = ""
     @State private var about: String = ""
     
@@ -50,33 +49,18 @@ struct SignupView: View {
                 Divider()
 
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Username")
-                    HStack {
-                        Text("@")
-                            .font(.title3)
-                            .bold()
-                            .foregroundColor(.gray)
-                        TextField("Enter username (without @)", text: $userName)
-                            .textFieldStyle(.roundedBorder)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                    }
-                    .padding(.horizontal, 8)
-                    .frame(height: 44)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(8)
                     Text("Name")
                     TextField("Enter name", text: $name)
+                        .frame(width: 400)
                         .textFieldStyle(.roundedBorder)
                     Text("About")
                     TextEditor(text: $about)
-                        .frame(height: 100)
+                        .frame(width: 400, height: 100)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                         )
                 }
-                .frame(maxWidth: 600)
                 .padding(.vertical)
             }
             .padding()
@@ -89,7 +73,7 @@ struct SignupView: View {
             Button("Create") {
                 Task {
                     await appState.editUserMetadata(
-                        name: userName,
+                        name: "",
                         about: about,
                         picture: "",
                         nip05: "",
