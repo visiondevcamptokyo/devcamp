@@ -339,8 +339,6 @@ class AppState: ObservableObject {
             return
         }
         
-        print("self.selectedOwnerAccount?.publicKey: \(self.selectedOwnerAccount?.publicKey ?? "")")
-        
         var event = Event(
             pubkey: self.selectedOwnerAccount?.publicKey ?? "",
             createdAt: .init(),
@@ -351,11 +349,8 @@ class AppState: ObservableObject {
         
         do {
             try event.sign(with: key)
-            print("event: \(event)")
-            print("nip1relayUrl: \(nip1relayUrl)")
             
             nostrClient.send(event: event, onlyToRelayUrls: [nip1relayUrl])
-            print("Successed to sign or send event")
         } catch {
             print("Failed to sign or send event: \(error)")
         }

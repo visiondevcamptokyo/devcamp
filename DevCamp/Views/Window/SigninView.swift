@@ -82,11 +82,6 @@ struct SigninView: View {
         
         if let metadataRelay = Relay.createNew(withUrl: metadataRelayUrl) {
             modelContext.insert(metadataRelay)
-            do {
-                try modelContext.save()
-            } catch {
-                print(error)
-            }
             _ = await metadataRelay.updateRelayInfo()
             
             if !metadataRelay.supportsNip1 {
@@ -97,17 +92,18 @@ struct SigninView: View {
         
         if let nip29Relay = Relay.createNew(withUrl: nip29relayUrl) {
             modelContext.insert(nip29Relay)
-            do {
-                try modelContext.save()
-            } catch {
-                print(error)
-            }
             _ = await nip29Relay.updateRelayInfo()
             
             if !nip29Relay.supportsNip29 {
                 print("NO NIP 29")
                 modelContext.delete(nip29Relay)
             }
+        }
+        
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error saving Relay: \(error)")
         }
         
         await appState.setupYourOwnMetadata()
