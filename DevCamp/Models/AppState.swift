@@ -630,7 +630,6 @@ extension AppState: NostrClientDelegate {
                         await self.editFacetimeLink(link: link)
                     }
                 }
-
             case .eose(let id):
                 // EOSE (End of Stored Events Notice) is a mechanism for the Relay to notify that it has finished sending stored data
                 switch id {

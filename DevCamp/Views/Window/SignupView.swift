@@ -72,21 +72,72 @@ struct SignupView: View {
             }
             Button("Create") {
                 Task {
-                    await appState.editUserMetadata(
-                        name: "",
-                        about: about,
-                        picture: "",
-                        nip05: "",
-                        displayName: name,
-                        website: "",
-                        banner: "",
-                        bot: false,
-                        lud16: ""
-                    )
+                    if let ownerAccount = OwnerAccount.createNew() {
+                        ownerAccount.selected = true
+                        modelContext.insert(ownerAccount)
+                        appState.selectedOwnerAccount = ownerAccount
+
+                        await addRelay()
+                        
+                        // Wait 1 seconds to be connected to relay
+                        try? await Task.sleep(nanoseconds: 1_000_000_000)
+                        await appState.editUserMetadata(
+                            name: "",
+                            about: about,
+                            picture: "",
+                            nip05: "",
+                            displayName: name,
+                            website: "",
+                            banner: "",
+                            bot: false,
+                            lud16: ""
+                        )
+
+                    } else {
+                        print("Failed to create OwnerAccount")
+                    }
                 }
                 appState.registeredNsec = true
             }
             .buttonStyle(.borderedProminent)
         }
+    }
+    
+    private func addRelay() async {
+        let metadataRelayUrl = "wss://relay.damus.io"
+        let nip29relayUrl = "wss://groups.yugoatobe.com"
+        
+        if let metadataRelay = Relay.createNew(withUrl: metadataRelayUrl) {
+            modelContext.insert(metadataRelay)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving metadataRelay: \(error)")
+            }
+            _ = await metadataRelay.updateRelayInfo()
+            
+            if !metadataRelay.supportsNip1 {
+                print("This relay does not support Nip 1.")
+                modelContext.delete(metadataRelay)
+            }
+        }
+        
+        if let nip29Relay = Relay.createNew(withUrl: nip29relayUrl) {
+            modelContext.insert(nip29Relay)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving nip29Relay: \(error)")
+            }
+            _ = await nip29Relay.updateRelayInfo()
+            
+            if !nip29Relay.supportsNip29 {
+                print("NO NIP 29")
+                modelContext.delete(nip29Relay)
+            }
+        }
+        
+        await appState.setupYourOwnMetadata()
+        await appState.subscribeGroupMetadata()
     }
 }
