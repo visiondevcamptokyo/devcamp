@@ -55,7 +55,18 @@ struct LogoutConfirmationView: View {
                 .cornerRadius(5)
 
                 Button("Logout") {
-                    deleteAllData()
+                    do {
+                        let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+                        let relaysUrl = relays.map(\.url)
+                        print("relayのurl: \(relaysUrl)")
+                        
+                        appState.remove(relaysWithUrl: relaysUrl)
+                        print("disconnectしたよ")
+                    } catch {
+                        print("Failed to fetch relays: \(error)")
+                    }
+                    
+                    deleteAllSwiftData()
                     
                     appState.selectedOwnerAccount = nil
                     appState.selectedNip1Relay = nil
@@ -74,7 +85,7 @@ struct LogoutConfirmationView: View {
         .frame(width: 300)
     }
     
-    private func deleteAllData() {
+    private func deleteAllSwiftData() {
         do {
             let ownerAccounts = try modelContext.fetch(FetchDescriptor<OwnerAccount>())
             for account in ownerAccounts {

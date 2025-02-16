@@ -193,7 +193,8 @@ class AppState: ObservableObject {
         }
     }
     
-    public func remove(relaysWithUrl relayUrls: [String]) {
+    @MainActor
+    func remove(relaysWithUrl relayUrls: [String]) {
         for relayUrl in relayUrls {
             self.nostrClient.remove(relayWithUrl: relayUrl)
         }
