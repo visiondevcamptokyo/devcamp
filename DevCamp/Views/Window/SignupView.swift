@@ -105,7 +105,7 @@ struct SignupView: View {
     
     private func addRelay() async {
         let metadataRelayUrl = "wss://relay.damus.io"
-        let nip29relayUrl = "wss://groups.yugoatobe.com"
+        let nip29relayUrl = "wss://groups.0xchat.com"
         
         if let metadataRelay = Relay.createNew(withUrl: metadataRelayUrl) {
             modelContext.insert(metadataRelay)
