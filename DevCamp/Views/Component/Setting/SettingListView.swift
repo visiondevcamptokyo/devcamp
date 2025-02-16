@@ -68,10 +68,7 @@ struct LogoutConfirmationView: View {
                     
                     deleteAllSwiftData()
                     
-                    appState.selectedOwnerAccount = nil
-                    appState.selectedNip1Relay = nil
-                    appState.selectedNip29Relay = nil
-                    appState.registeredNsec = false
+                    resetState()
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.red)
@@ -101,6 +98,28 @@ struct LogoutConfirmationView: View {
         } catch {
             print("Failed to delete all data: \(error)")
         }
+    }
+    
+    private func resetState() {
+        appState.lastEditGroupMetadataEventId = nil
+        appState.lastCreateGroupMetadataEventId = nil
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil, link: nil)
+        appState.shouldCloseEditSessionLinkSheet = false
+        appState.registeredNsec = false
+        appState.selectedOwnerAccount = nil
+        appState.selectedNip1Relay = nil
+        appState.selectedNip29Relay = nil
+        appState.selectedGroup = nil
+        appState.selectedEditingGroup = nil
+        appState.allChatGroup = []
+        appState.allChatMessage = []
+        appState.allUserMetadata = []
+        appState.allGroupAdmin = []
+        appState.allGroupMember = []
+        appState.chatMessageNumResults = 50
+        appState.statuses = [:]
+        appState.ownerPostContents = []
+        appState.profileMetadata = nil
     }
 }
 
