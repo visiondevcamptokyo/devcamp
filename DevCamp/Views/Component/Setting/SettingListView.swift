@@ -55,12 +55,20 @@ struct LogoutConfirmationView: View {
                 .cornerRadius(5)
 
                 Button("Logout") {
-                    deleteAllData()
+                    do {
+                        let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+                        let relaysUrl = relays.map(\.url)
+                        print("relayのurl: \(relaysUrl)")
+                        
+                        appState.remove(relaysWithUrl: relaysUrl)
+                        print("disconnectしたよ")
+                    } catch {
+                        print("Failed to fetch relays: \(error)")
+                    }
                     
-                    appState.selectedOwnerAccount = nil
-                    appState.selectedNip1Relay = nil
-                    appState.selectedNip29Relay = nil
-                    appState.registeredNsec = false
+                    deleteAllSwiftData()
+                    
+                    resetState()
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.red)
@@ -74,7 +82,7 @@ struct LogoutConfirmationView: View {
         .frame(width: 300)
     }
     
-    private func deleteAllData() {
+    private func deleteAllSwiftData() {
         do {
             let ownerAccounts = try modelContext.fetch(FetchDescriptor<OwnerAccount>())
             for account in ownerAccounts {
@@ -90,6 +98,28 @@ struct LogoutConfirmationView: View {
         } catch {
             print("Failed to delete all data: \(error)")
         }
+    }
+    
+    private func resetState() {
+        appState.lastEditGroupMetadataEventId = nil
+        appState.lastCreateGroupMetadataEventId = nil
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil, link: nil)
+        appState.shouldCloseEditSessionLinkSheet = false
+        appState.registeredNsec = false
+        appState.selectedOwnerAccount = nil
+        appState.selectedNip1Relay = nil
+        appState.selectedNip29Relay = nil
+        appState.selectedGroup = nil
+        appState.selectedEditingGroup = nil
+        appState.allChatGroup = []
+        appState.allChatMessage = []
+        appState.allUserMetadata = []
+        appState.allGroupAdmin = []
+        appState.allGroupMember = []
+        appState.chatMessageNumResults = 50
+        appState.statuses = [:]
+        appState.ownerPostContents = []
+        appState.profileMetadata = nil
     }
 }
 
