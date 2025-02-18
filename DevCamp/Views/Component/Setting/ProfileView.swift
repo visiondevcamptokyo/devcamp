@@ -90,6 +90,8 @@ struct ProfileView: View {
                     Spacer()
                     
                     Button(action: {
+                        appState.profileMetadata?.name = displayName
+                        appState.profileMetadata?.about = about
                         Task{
                             await appState.editUserMetadata(
                                 name: appState.profileMetadata?.name,
