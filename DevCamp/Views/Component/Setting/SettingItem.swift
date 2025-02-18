@@ -2,7 +2,7 @@ enum SettingItem: Hashable, CaseIterable, Identifiable {
     case profile
     case key
     case metadataRelay
-    case nip29Relay
+    case groupRelay
     
     var id: Self { self }
     
@@ -14,8 +14,8 @@ enum SettingItem: Hashable, CaseIterable, Identifiable {
             return "Key"
         case .metadataRelay:
             return "MetadataRelay"
-        case .nip29Relay:
-            return "Nip29Relay"
+        case .groupRelay:
+            return "GroupRelay"
         }
     }
     
@@ -27,7 +27,7 @@ enum SettingItem: Hashable, CaseIterable, Identifiable {
             return "lock.shield"
         case .metadataRelay:
             return "antenna.radiowaves.left.and.right"
-        case .nip29Relay:
+        case .groupRelay:
             return "network"
         }
     }

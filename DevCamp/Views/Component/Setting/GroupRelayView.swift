@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct Nip29RelayView: View {
+struct GroupRelayView: View {
     
     @EnvironmentObject private var appState: AppState
     @Environment(\.modelContext) private var modelContext

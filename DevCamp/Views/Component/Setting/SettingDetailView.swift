@@ -12,8 +12,8 @@ struct SettingDetailView: View {
         case .metadataRelay:
             MetadataRelayView()
             
-        case .nip29Relay:
-            Nip29RelayView()
+        case .groupRelay:
+            GroupRelayView()
             
         default:
             Text("Please select a setting")
