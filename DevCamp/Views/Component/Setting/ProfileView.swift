@@ -4,8 +4,6 @@ import KeychainAccess
 import Nostr
 
 struct ProfileView: View {
-    @State private var displayName: String = ""
-    @State private var about: String = ""
     @State private var npubKey : String = ""
     @State private var showSuccessAlert: Bool = false
 
@@ -63,7 +61,10 @@ struct ProfileView: View {
                     
                     Text("Name")
                         .font(.headline)
-                    TextField("Enter account name", text: $displayName)
+                    TextField("Enter account name", text: Binding(
+                        get: { appState.profileMetadata?.displayName ?? "" },
+                        set: { appState.profileMetadata?.displayName = $0 }
+                    ))
                         .padding()
                         .frame(width:300)
                         .background(Color.gray.opacity(0.2))
@@ -71,17 +72,16 @@ struct ProfileView: View {
                     
                     Text("About")
                         .font(.headline)
-                    TextField("Write something about yourself", text: $about)
+                    TextField("Write something about yourself", text: Binding(
+                        get: { appState.profileMetadata?.about ?? "" },
+                        set: { appState.profileMetadata?.about = $0 }
+                    ))
                         .lineLimit(5, reservesSpace: true)
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
                     
                 }.onAppear {
-                    if let metadata = appState.profileMetadata {
-                        displayName = metadata.displayName ?? ""
-                        about = metadata.about ?? ""
-                    }
                     getKeypair()
                 }
                 
@@ -93,10 +93,10 @@ struct ProfileView: View {
                         Task{
                             await appState.editUserMetadata(
                                 name: appState.profileMetadata?.name,
-                                about: about,
+                                about: appState.profileMetadata?.about,
                                 picture: appState.profileMetadata?.picture,
                                 nip05: appState.profileMetadata?.nip05,
-                                displayName: displayName,
+                                displayName: appState.profileMetadata?.displayName,
                                 website: appState.profileMetadata?.website,
                                 banner: appState.profileMetadata?.banner,
                                 bot: appState.profileMetadata?.bot,
