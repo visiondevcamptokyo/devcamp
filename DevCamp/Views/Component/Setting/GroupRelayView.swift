@@ -137,25 +137,19 @@ struct GroupRelayView: View {
                 return
             }
             
-            await appState.setupYourOwnMetadata()
             await appState.subscribeGroupMetadata()
         }
     }
 
     
     func removeRelay(relay: Relay) async {
-        if let nip1relay = appState.selectedNip1Relay?.url {
-            appState.remove(relaysWithUrl: [relay.url, nip1relay])
-        }
+        appState.remove(relaysWithUrl: [relay.url])
+        
         appState.selectedGroup = nil
-        appState.selectedOwnerAccount = nil
         appState.allGroupMember.removeAll()
         appState.allGroupAdmin.removeAll()
         appState.allChatGroup.removeAll()
         appState.allChatMessage.removeAll()
-        appState.allUserMetadata.removeAll()
-        appState.ownerPostContents.removeAll()
-        appState.profileMetadata = nil
         modelContext.delete(relay)
         do {
             try modelContext.save()
