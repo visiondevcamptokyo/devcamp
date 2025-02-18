@@ -28,7 +28,7 @@ func handleGroupMetadata(appState: AppState, event: Event) {
         isPublic: isPublic,
         isOpen: isOpen,
         isMember: false,
-        isAdmin: appState.allChatGroup.contains(where: { $0.id == groupId })
+        isAdmin: false
     )
     
     DispatchQueue.main.async {

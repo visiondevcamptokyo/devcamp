@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct Nip29RelayView: View {
+struct GroupRelayView: View {
     
     @EnvironmentObject private var appState: AppState
     @Environment(\.modelContext) private var modelContext
@@ -9,14 +9,15 @@ struct Nip29RelayView: View {
     @State private var inputText = ""
     
     @Query private var relays: [Relay]
-    var chatRelays: [Relay] {
-        return relays.filter({ $0.supportsNip29 })
+    var groupRelay: Relay? {
+        relays.first(where: { $0.supportsNip29 })
     }
     
-    @State var suggestedRelays: [String] = ["wss://groups.yugoatobe.com", "wss://groups.0xchat.com", "wss://relay.groups.nip29.com"]
-    var filteredSuggestedRelays: [String] {
-        return suggestedRelays.filter { s in !chatRelays.contains { r in r.url == s }}
-    }
+    @State var suggestedRelays: [String] = [
+        "wss://groups.yugoatobe.com",
+        "wss://groups.0xchat.com",
+        "wss://relay.groups.nip29.com"
+    ]
     
     var body: some View {
             ZStack {
@@ -32,30 +33,38 @@ struct Nip29RelayView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     
                     VStack(spacing: 8) {
-                        Text("Add Chat Relay")
+                        Text("Group Relay")
                             .font(.title)
                             .bold()
-                        Text("Let's get started by adding an nip29 enabled relay")
+                        Text("Please select the relay corresponding to the group you use.")
                             .foregroundStyle(.secondary)
                     }
-
                     
                     Divider()
-                   
-                    HStack {
-                        TextField("wss://<nip29 enabled relay>", text: $inputText)
-                            .textFieldStyle(.roundedBorder)
-                        Button("Add") {
-                            Task {
-                                await addRelay(relayUrl: inputText)
+                    
+                    if let groupRelay = groupRelay {
+                        List {
+                            Section("Connected Group Relays") {
+                                relayRow(relay: groupRelay)
                             }
                         }
-                    }
-
-                    
-                    List {
-                        connectedChatRelaysSection
-                        suggestedChatRelaysSection
+                    } else {
+                        VStack {
+                            HStack {
+                                TextField("wss://<nip29 enabled relay>", text: $inputText)
+                                    .textFieldStyle(.roundedBorder)
+                                Button("Add") {
+                                    Task {
+                                        await addRelay(relayUrl: inputText)
+                                    }
+                                }
+                            }
+                            
+                            List {
+                                suggestedGroupRelaysSection
+                            }
+                            .padding(.top, 8)
+                        }
                     }
                 }
                 .padding(.top, 32)
@@ -64,17 +73,9 @@ struct Nip29RelayView: View {
             }
         }
         
-        private var connectedChatRelaysSection: some View {
-            Section("Connected Chat Relays") {
-                ForEach(chatRelays) { relay in
-                    relayRow(relay: relay)
-                }
-            }
-        }
-        
-        private var suggestedChatRelaysSection: some View {
+        private var suggestedGroupRelaysSection: some View {
             Section("Suggested Chat Relays") {
-                ForEach(filteredSuggestedRelays, id: \.self) { relay in
+                ForEach(suggestedRelays, id: \.self) { relay in
                     suggestedRelayRow(relay: relay)
                 }
             }
@@ -136,34 +137,24 @@ struct Nip29RelayView: View {
                 return
             }
             
-            await appState.setupYourOwnMetadata()
             await appState.subscribeGroupMetadata()
         }
     }
 
     
     func removeRelay(relay: Relay) async {
-        if let nip1relay = appState.selectedNip1Relay?.url {
-            appState.remove(relaysWithUrl: [relay.url, nip1relay])
-        }
+        appState.remove(relaysWithUrl: [relay.url])
+        
         appState.selectedGroup = nil
-        appState.selectedOwnerAccount = nil
         appState.allGroupMember.removeAll()
         appState.allGroupAdmin.removeAll()
         appState.allChatGroup.removeAll()
         appState.allChatMessage.removeAll()
-        appState.allUserMetadata.removeAll()
-        appState.ownerPostContents.removeAll()
-        appState.profileMetadata = nil
         modelContext.delete(relay)
         do {
             try modelContext.save()
         } catch {
             print("Failed to remove relay: \(error)")
         }
-    }
-    
-    func nextEnabled() -> Bool {
-        return chatRelays.count > 0
     }
 }

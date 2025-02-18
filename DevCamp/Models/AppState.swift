@@ -622,6 +622,8 @@ extension AppState: NostrClientDelegate {
                             print("Missing required metadata for editing group")
                             return
                         }
+                        try? await Task.sleep(nanoseconds: 1_000_000_000)
+                        await self.subscribeGroupAdminAndMembers()
                         await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, name: name, about: about)
                         await self.editFacetimeLink(link: link)
                     }
