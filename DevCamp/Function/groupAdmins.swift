@@ -45,6 +45,12 @@ func handleGroupAdmins(appState: AppState, event: Event, relayUrl: String) {
                     appState.nostrClient.add(relayWithUrl: relayUrl, subscriptions: [adminGroupSubscription])
                 }
             }
+            if publicKey == appState.selectedOwnerAccount?.publicKey {
+                // Update the isAdmin property of allChatGroup
+                if let index = appState.allChatGroup.firstIndex(where: { $0.id == groupId }) {
+                    appState.allChatGroup[index].isAdmin = true
+                }
+            }
         }
     }
 }
