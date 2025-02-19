@@ -16,7 +16,6 @@ struct MetadataRelayView: View {
         "wss://relay.damus.io",
         "wss://nostr.land",
         "wss://yabu.me",
-        "wss://nostr.wine",
         "wss://nos.lol",
     ]
     
@@ -93,20 +92,22 @@ struct MetadataRelayView: View {
                     }
                 }
             }
-            Section("Suggested Metadata Relays") {
-                ForEach(filteredSuggestedRelays, id: \.self) { (relay: String) in
-                    HStack {
-                        Text(relay)
-                        Spacer()
-                        Button(action: {
-                            Task {
-                                await addRelay(relayUrl: relay)
+            if filteredSuggestedRelays != [] {
+                Section("Suggested Metadata Relays") {
+                    ForEach(filteredSuggestedRelays, id: \.self) { (relay: String) in
+                        HStack {
+                            Text(relay)
+                            Spacer()
+                            Button(action: {
+                                Task {
+                                    await addRelay(relayUrl: relay)
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .imageScale(.large)
                             }
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .imageScale(.large)
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -145,10 +146,6 @@ struct MetadataRelayView: View {
     
     func removeRelay(relay: Relay) async {
         appState.remove(relaysWithUrl: [relay.url])
-        appState.selectedOwnerAccount = nil
-        appState.allUserMetadata.removeAll()
-        appState.ownerPostContents.removeAll()
-        appState.profileMetadata = nil
         modelContext.delete(relay)
         do {
             try modelContext.save()
