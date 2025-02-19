@@ -24,7 +24,7 @@ class AppState: ObservableObject {
     
     @Published var registeredNsec: Bool = true
     @Published var selectedOwnerAccount: OwnerAccount?
-    @Published var selectedNip1Relay: Relay?
+    @Published var selectedNip1Relays: Array<Relay> = []
     @Published var selectedNip29Relay: Relay?
     @Published var selectedGroup: ChatGroupMetadata? {
         didSet {
@@ -71,17 +71,18 @@ class AppState: ObservableObject {
     @MainActor
     func setupYourOwnMetadata() async {
         var selectedAccountDescriptor = FetchDescriptor<OwnerAccount>(predicate: #Predicate { $0.selected })
-        var selectedMetadataRelayDesctiptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip1 && !$0.supportsNip29 })
+        let selectedMetadataRelayDesctiptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip1 && !$0.supportsNip29 })
         selectedAccountDescriptor.fetchLimit = 1
-        selectedMetadataRelayDesctiptor.fetchLimit = 1
         
         guard
             let context = modelContainer?.mainContext,
-            let selectedMetadataRelay = try? context.fetch(selectedMetadataRelayDesctiptor).first
+            let metadataRelays = try? context.fetch(selectedMetadataRelayDesctiptor)
         else {
             print("Context or selectedMetadataRelay is nil.")
             return
         }
+        
+        let metadataRelayUrls = metadataRelays.map(\.url)
         
         do {
             let fetchedAccounts = try context.fetch(selectedAccountDescriptor).first
@@ -90,8 +91,10 @@ class AppState: ObservableObject {
             if let account = self.selectedOwnerAccount {
                 let publicKey = account.publicKey
                 let metadataSubscription = Subscription(filters: [.init(authors: [publicKey], kinds: [Kind.setMetadata])])
-                nostrClient.add(relayWithUrl: selectedMetadataRelay.url, subscriptions: [metadataSubscription] )
-                self.selectedNip1Relay = selectedMetadataRelay
+                metadataRelayUrls.forEach { metadataRelayUrl in
+                    nostrClient.add(relayWithUrl: metadataRelayUrl, subscriptions: [metadataSubscription] )
+                }
+                self.selectedNip1Relays = metadataRelays
             }
         } catch {
             print("Error fetching selected account: \(error)")
@@ -102,7 +105,7 @@ class AppState: ObservableObject {
     @MainActor
     func connectAllMetadataRelays() async {
         let relaysDescriptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip1 && !$0.supportsNip29 })
-        guard let relay = try? modelContainer?.mainContext.fetch(relaysDescriptor).first else { return }
+        guard let metadataRelays = try? modelContainer?.mainContext.fetch(relaysDescriptor) else { return }
         var pubkeys = Set<String>()
 
         for admin in self.allGroupAdmin {
@@ -119,7 +122,11 @@ class AppState: ObservableObject {
             filters: [Filter(authors: pubkeysArray, kinds: [Kind.setMetadata])],
             id: IdSubPublicMetadata
         )
-        nostrClient.add(relayWithUrl: relay.url, subscriptions: [metadataSubscription])
+        
+        let metadataRelayUrls = metadataRelays.map(\.url)
+        metadataRelayUrls.forEach { metadataRelayUrl in
+            nostrClient.add(relayWithUrl: metadataRelayUrl, subscriptions: [metadataSubscription] )
+        }
     }
     
     // MARK: Subscribe to group information (group name, etc.) on NIP-29-compatible relays
@@ -321,7 +328,7 @@ class AppState: ObservableObject {
             print("KeyPair not found.")
             return
         }
-        let nip1relayUrl = self.selectedNip1Relay?.url ?? ""
+        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
         
         let metadata: [String: String?] = [
             "name": name,
@@ -351,7 +358,7 @@ class AppState: ObservableObject {
         do {
             try event.sign(with: key)
             
-            nostrClient.send(event: event, onlyToRelayUrls: [nip1relayUrl])
+            nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
         } catch {
             print("Failed to sign or send event: \(error)")
         }
@@ -368,7 +375,7 @@ class AppState: ObservableObject {
             return
         }
         
-        let nip1relayUrl = self.selectedNip1Relay?.url ?? ""
+        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
         
         let ownerAccount = self.allUserMetadata.filter { $0.publicKey == self.selectedOwnerAccount?.publicKey }.first
         
@@ -403,8 +410,7 @@ class AppState: ObservableObject {
         do {
             try event.sign(with: key)
             
-            nostrClient.send(event: event, onlyToRelayUrls: [nip1relayUrl])
-            print("Edit group link event sent to \(nip1relayUrl)")
+            nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
         } catch {
             print("Failed to sign or send event: \(error)")
         }
