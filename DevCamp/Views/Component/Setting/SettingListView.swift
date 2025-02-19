@@ -104,7 +104,7 @@ struct LogoutConfirmationView: View {
         appState.shouldCloseEditSessionLinkSheet = false
         appState.registeredNsec = false
         appState.selectedOwnerAccount = nil
-        appState.selectedNip1Relay = nil
+        appState.selectedNip1Relays = []
         appState.selectedNip29Relay = nil
         appState.selectedGroup = nil
         appState.selectedEditingGroup = nil

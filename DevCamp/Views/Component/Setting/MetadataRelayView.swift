@@ -9,11 +9,16 @@ struct MetadataRelayView: View {
     
     @Query private var relays: [Relay]
     var metadataRelays: [Relay] {
-        //TODO: It is possible that the relay for Metadata and the relay for Group may match. Note that it could be an error in that case.
         relays.filter { !$0.supportsNip29 }
     }
     
-    @State private var suggestedRelays: [String] = ["wss://relay.damus.io", "wss://nostr.land", "wss://yabu.me"]
+    @State private var suggestedRelays: [String] = [
+        "wss://relay.damus.io",
+        "wss://nostr.land",
+        "wss://yabu.me",
+        "wss://nos.lol",
+    ]
+    
     var filteredSuggestedRelays: [String] {
         let relayUrls = relays.map { $0.url }
         return suggestedRelays.filter { !relayUrls.contains($0) }
@@ -87,20 +92,22 @@ struct MetadataRelayView: View {
                     }
                 }
             }
-            Section("Suggested Metadata Relays") {
-                ForEach(filteredSuggestedRelays, id: \.self) { (relay: String) in
-                    HStack {
-                        Text(relay)
-                        Spacer()
-                        Button(action: {
-                            Task {
-                                await addRelay(relayUrl: relay)
+            if filteredSuggestedRelays != [] {
+                Section("Suggested Metadata Relays") {
+                    ForEach(filteredSuggestedRelays, id: \.self) { (relay: String) in
+                        HStack {
+                            Text(relay)
+                            Spacer()
+                            Button(action: {
+                                Task {
+                                    await addRelay(relayUrl: relay)
+                                }
+                            }) {
+                                Image(systemName: "plus.circle.fill")
+                                    .imageScale(.large)
                             }
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .imageScale(.large)
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
@@ -134,32 +141,16 @@ struct MetadataRelayView: View {
             }
             
             await appState.setupYourOwnMetadata()
-            await appState.subscribeGroupMetadata()
         }
     }
     
     func removeRelay(relay: Relay) async {
-        if let nip29relay = appState.selectedNip29Relay?.url {
-            appState.remove(relaysWithUrl: [relay.url, nip29relay])
-        }
-        appState.selectedGroup = nil
-        appState.selectedOwnerAccount = nil
-        appState.allGroupMember.removeAll()
-        appState.allGroupAdmin.removeAll()
-        appState.allChatGroup.removeAll()
-        appState.allChatMessage.removeAll()
-        appState.allUserMetadata.removeAll()
-        appState.ownerPostContents.removeAll()
-        appState.profileMetadata = nil
+        appState.remove(relaysWithUrl: [relay.url])
         modelContext.delete(relay)
         do {
             try modelContext.save()
         } catch {
             print("Failed to remove relay: \(error)")
         }
-    }
-    
-    func nextEnabled() -> Bool {
-        !relays.isEmpty
     }
 }
