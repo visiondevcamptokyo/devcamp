@@ -4,6 +4,7 @@ import SwiftUI
 /// A view that presents the app's content library.
 struct HomeView: View {
     @EnvironmentObject private var appState: AppState
+    @Environment(\.modelContext) private var modelContext
     @State var groupActivityManager: GroupActivityManager
     @State private var searchText = ""
     @State private var sheetDetail: InventoryItem?
@@ -112,6 +113,14 @@ struct HomeView: View {
     }
     
     private func resetState() async {
+        do {
+            let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+            let relaysUrl = relays.map(\.url)
+            appState.remove(relaysWithUrl: relaysUrl)
+        } catch {
+            print("Failed to fetch relays: \(error)")
+        }
+        
         appState.lastEditGroupMetadataEventId = nil
         appState.lastCreateGroupMetadataEventId = nil
         appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil, link: nil)
