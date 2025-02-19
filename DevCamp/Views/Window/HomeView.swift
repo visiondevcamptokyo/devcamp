@@ -4,6 +4,7 @@ import SwiftUI
 /// A view that presents the app's content library.
 struct HomeView: View {
     @EnvironmentObject private var appState: AppState
+    @Environment(\.modelContext) private var modelContext
     @State var groupActivityManager: GroupActivityManager
     @State private var searchText = ""
     @State private var sheetDetail: InventoryItem?
@@ -21,7 +22,7 @@ struct HomeView: View {
                             .padding()
                             .background(Color.gray.opacity(0.4))
                             .cornerRadius(32)
-                            .frame(width: 600)
+                            .frame(width: 500)
                             .frame(height: 40)
                         Spacer()
                     }
@@ -31,6 +32,15 @@ struct HomeView: View {
                     .frame(height: 40)
                     
                     Spacer()
+                    
+                    Button("Reload"){
+                        Task {
+                            await resetState()
+                            await appState.setupYourOwnMetadata()
+                            await appState.subscribeGroupMetadata()
+                        }
+                    }
+                    .padding(.trailing, 10)
                     
                     Button("+ Start Session") {
                         sheetDetail = InventoryItem(
@@ -100,6 +110,35 @@ struct HomeView: View {
                 group.name?.localizedCaseInsensitiveContains(searchText) ?? false
             }
         }
+    }
+    
+    private func resetState() async {
+        do {
+            let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+            let relaysUrl = relays.map(\.url)
+            appState.remove(relaysWithUrl: relaysUrl)
+        } catch {
+            print("Failed to fetch relays: \(error)")
+        }
+        
+        appState.lastEditGroupMetadataEventId = nil
+        appState.lastCreateGroupMetadataEventId = nil
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil, link: nil)
+        appState.shouldCloseEditSessionLinkSheet = false
+        appState.selectedOwnerAccount = nil
+        appState.selectedNip1Relay = nil
+        appState.selectedNip29Relay = nil
+        appState.selectedGroup = nil
+        appState.selectedEditingGroup = nil
+        appState.allChatGroup = []
+        appState.allChatMessage = []
+        appState.allUserMetadata = []
+        appState.allGroupAdmin = []
+        appState.allGroupMember = []
+        appState.chatMessageNumResults = 50
+        appState.statuses = [:]
+        appState.ownerPostContents = []
+        appState.profileMetadata = nil
     }
 }
 

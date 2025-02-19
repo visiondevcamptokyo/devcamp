@@ -58,10 +58,7 @@ struct LogoutConfirmationView: View {
                     do {
                         let relays = try modelContext.fetch(FetchDescriptor<Relay>());
                         let relaysUrl = relays.map(\.url)
-                        print("relayのurl: \(relaysUrl)")
-                        
                         appState.remove(relaysWithUrl: relaysUrl)
-                        print("disconnectしたよ")
                     } catch {
                         print("Failed to fetch relays: \(error)")
                     }
