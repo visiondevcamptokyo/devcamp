@@ -79,9 +79,9 @@ struct SigninView: View {
     private func addRelay() async {
         let metadataRelayUrls = [
             "wss://relay.damus.io",
-            "wss://nostr.land",
-            "wss://yabu.me",
-            "wss://nos.lol",
+//            "wss://nostr.land",
+//            "wss://yabu.me",
+//            "wss://nos.lol",
         ]
         let nip29relayUrl = "wss://groups.0xchat.com"
         
