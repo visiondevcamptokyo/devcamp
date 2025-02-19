@@ -104,7 +104,6 @@ struct ProfileView: View {
                             )
                         }
                         showSuccessAlert = true
-                        print("Account settings saved")
                     }) {
                         Text("Save Changes")
                             .font(.headline)
