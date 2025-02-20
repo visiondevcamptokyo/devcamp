@@ -1,5 +1,6 @@
 import Foundation
 import Nostr
+import NostrClient
 
 func handleGroupMembers(appState: AppState, event: Event, relayUrl: String) {
     let tags = event.tags.map { $0 }
@@ -8,6 +9,8 @@ func handleGroupMembers(appState: AppState, event: Event, relayUrl: String) {
           let groupId = groupTag.otherInformation.first else {
         return
     }
+    
+    print("tags: \(tags)")
     
     let publicKeys = tags.filter { $0.id == "p" }.compactMap { $0.otherInformation.first }
     
@@ -26,6 +29,7 @@ func handleGroupMembers(appState: AppState, event: Event, relayUrl: String) {
             )
             if !appState.allGroupMember.contains(where: { $0.groupId == groupId && $0.publicKey == publicKey }) {
                 appState.allGroupMember.append(member)
+                appState.getMetadataFromPubkey(publicKey: publicKey)
             }
             
             if publicKey == appState.selectedOwnerAccount?.publicKey {

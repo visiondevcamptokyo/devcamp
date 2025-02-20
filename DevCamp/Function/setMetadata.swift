@@ -3,6 +3,7 @@ import NostrClient
 import Foundation
 
 func handleSetMetadata(appState: AppState, event: Event) {
+    print("ここもきたぞい")
     if let metadata = decodeUserMetadata(from: event.content) {
         let (name, about, picture, nip05, displayName, website, banner, bot, lud16) = metadata
         
