@@ -1,5 +1,6 @@
 import SwiftUI
 import GroupActivities
+import Nostr
 
 struct SessionDetailView: View {
     @State var inputSharePlayLink = ""
@@ -176,9 +177,15 @@ struct SessionDetailView: View {
                                 Text(user.displayName ?? "")
                                     .font(.body)
                                     .bold()
-                                Text(user.publicKey)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
+                                if let npubkey = try? user.publicKey.bech32FromHex(hrp: "npub") {
+                                    Text(npubkey)
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                } else {
+                                    Text("Invalid Public Key")
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                }
                             }
                         }
                         .padding(.vertical, 5)
@@ -223,9 +230,15 @@ struct SessionDetailView: View {
                                     Text(user.displayName ?? "")
                                         .font(.body)
                                         .bold()
-                                    Text(user.publicKey)
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
+                                    if let npubkey = try? user.publicKey.bech32FromHex(hrp: "npub") {
+                                        Text(npubkey)
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    } else {
+                                        Text("Invalid Public Key")
+                                            .font(.caption)
+                                            .foregroundColor(.red)
+                                    }
                                 }
                             }
                             .padding(.vertical, 5)

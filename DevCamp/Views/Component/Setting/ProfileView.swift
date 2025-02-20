@@ -4,7 +4,6 @@ import KeychainAccess
 import Nostr
 
 struct ProfileView: View {
-    @State private var npubKey : String = ""
     @State private var showSuccessAlert: Bool = false
 
     @EnvironmentObject private var appState : AppState
@@ -50,8 +49,8 @@ struct ProfileView: View {
                     
                     Text("Public Key")
                         .font(.headline)
-                    if appState.profileMetadata?.pubkey != nil {
-                        Text(npubKey)
+                    if let npubkey = try? appState.profileMetadata?.pubkey.bech32FromHex(hrp: "npub") {
+                        Text(npubkey)
                     } else {
                         Text("No public key available")
                             .foregroundColor(.red)
@@ -80,9 +79,6 @@ struct ProfileView: View {
                         .padding()
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
-                    
-                }.onAppear {
-                    getKeypair()
                 }
                 
                 Spacer()
@@ -124,15 +120,6 @@ struct ProfileView: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text("Metadata was successfully saved.")
-        }
-    }
-    
-    private func getKeypair() {
-        let keychain = Keychain(service: "devcamp")
-        guard let privateKeyData = try? keychain.get(appState.selectedOwnerAccount?.publicKey ?? "") else { return }
-        
-        if let privateKeyPair = try? KeyPair(hex: privateKeyData) {
-            npubKey = privateKeyPair.bech32PublicKey
         }
     }
 }
