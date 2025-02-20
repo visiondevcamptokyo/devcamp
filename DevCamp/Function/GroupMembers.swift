@@ -10,8 +10,6 @@ func handleGroupMembers(appState: AppState, event: Event, relayUrl: String) {
         return
     }
     
-    print("tags: \(tags)")
-    
     let publicKeys = tags.filter { $0.id == "p" }.compactMap { $0.otherInformation.first }
     
     DispatchQueue.main.async {

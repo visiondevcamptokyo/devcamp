@@ -101,36 +101,7 @@ class AppState: ObservableObject {
         }
     }
     
-//    // MARK: Subscribe to the "Metadata" of the Admins (ideally also Members) of the Group in MetadataRelay
-//    @MainActor
-//    func connectAllMetadataRelays() async {
-//        let relaysDescriptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip1 && !$0.supportsNip29 })
-//        guard let metadataRelays = try? modelContainer?.mainContext.fetch(relaysDescriptor) else { return }
-//        var pubkeys = Set<String>()
-//
-//        for admin in self.allGroupAdmin {
-//            pubkeys.insert(admin.publicKey)
-//        }
-//
-//        for member in self.allGroupMember {
-//            pubkeys.insert(member.publicKey)
-//        }
-//        
-//        let pubkeysArray = Array(pubkeys)
-//        
-//        let metadataSubscription = Subscription(
-//            filters: [Filter(authors: pubkeysArray, kinds: [Kind.setMetadata])],
-//            id: IdSubPublicMetadata
-//        )
-//        
-//        let metadataRelayUrls = metadataRelays.map(\.url)
-//        metadataRelayUrls.forEach { metadataRelayUrl in
-//            nostrClient.add(relayWithUrl: metadataRelayUrl, subscriptions: [metadataSubscription] )
-//        }
-//    }
-    
     func getMetadataFromPubkey(publicKey: String) {
-        print("動きます")
         let metadataSubscription = Subscription(
             filters: [Filter(authors: [publicKey], kinds: [Kind.setMetadata])],
             id: IdSubPublicMetadata
@@ -655,10 +626,6 @@ extension AppState: NostrClientDelegate {
                             await subscribeChatMessages()
                             await subscribeGroupAdminAndMembers()
                         }
-//                    case IdSubGroupAdminAndMembers:
-//                        Task{
-//                            await connectAllMetadataRelays()
-//                        }
                     
                     default:
                         ()
