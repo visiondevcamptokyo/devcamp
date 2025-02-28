@@ -9,8 +9,19 @@ func handleGroupMetadata(appState: AppState, event: Event) {
     let isPublic = tags.first(where: { $0.id == "private" }) == nil
     let isOpen = tags.first(where: { $0.id == "closed" }) == nil
     let name = tags.first(where: { $0.id == "name" })?.otherInformation.first
-    let about = tags.first(where: { $0.id == "about" })?.otherInformation.first
+    var about = ""
+    var faceTime = ""
     let picture = tags.first(where: { $0.id == "picture" })?.otherInformation.first
+    
+    if let aboutJson = tags.first(where: { $0.id == "about" })?.otherInformation.first,
+       let data = aboutJson.data(using: .utf8),
+       let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+        about = jsonObject["description"] ?? ""
+        faceTime = jsonObject["link"] ?? ""
+        
+    } else {
+        return
+    }
     
     
     let dateFormatter = DateFormatter()
@@ -25,6 +36,7 @@ func handleGroupMetadata(appState: AppState, event: Event) {
         name: name,
         picture: picture,
         about: about,
+        facetime: faceTime,
         isPublic: isPublic,
         isOpen: isOpen,
         isMember: false,

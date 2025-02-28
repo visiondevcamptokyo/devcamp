@@ -100,7 +100,7 @@ struct LogoutConfirmationView: View {
     private func resetState() {
         appState.lastEditGroupMetadataEventId = nil
         appState.lastCreateGroupMetadataEventId = nil
-        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil)
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
         appState.shouldCloseEditSessionLinkSheet = false
         appState.registeredNsec = false
         appState.selectedOwnerAccount = nil

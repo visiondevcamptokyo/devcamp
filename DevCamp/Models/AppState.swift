@@ -17,7 +17,7 @@ class AppState: ObservableObject {
     /// ID of the last groupEditMetadata event that was sent.
     @Published var lastEditGroupMetadataEventId: String?
     @Published var lastCreateGroupMetadataEventId: String?
-    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, name: String?, about: String?)
+    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, picture: String?, name: String?, about: String?)
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
     @Published var shouldCloseEditSessionLinkSheet: Bool = false
@@ -351,7 +351,7 @@ class AppState: ObservableObject {
     
     /// Edit the group's metadata
     @MainActor
-    func editGroupMetadata(ownerAccount: OwnerAccount, groupId: String, name: String, about: String) async {
+    func editGroupMetadata(ownerAccount: OwnerAccount, groupId: String, picture: String, name: String, about: String) async {
         guard let key = ownerAccount.getKeyPair() else {
             print("KeyPair not found.")
             return
@@ -364,6 +364,7 @@ class AppState: ObservableObject {
         
         let tags: [Tag] = [
             Tag(id: "h", otherInformation: groupId),
+            Tag(id: "picture", otherInformation: [picture]),
             Tag(id: "name", otherInformation: [name]),
             Tag(id: "about", otherInformation: [about]),
         ]
@@ -555,6 +556,7 @@ extension AppState: NostrClientDelegate {
                     Task {
                         guard let ownerAccount = self.createdGroupMetadata.ownerAccount,
                               let groupId = self.createdGroupMetadata.groupId,
+                              let picture = self.createdGroupMetadata.picture,
                               let name = self.createdGroupMetadata.name,
                               let about = self.createdGroupMetadata.about else {
                             print("Missing required metadata for editing group")
@@ -562,7 +564,7 @@ extension AppState: NostrClientDelegate {
                         }
                         try? await Task.sleep(nanoseconds: 1_000_000_000)
                         await self.subscribeGroupAdminAndMembers()
-                        await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, name: name, about: about)
+                        await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, picture: picture, name: name, about: about)
                     }
                 }
             case .eose(let id):

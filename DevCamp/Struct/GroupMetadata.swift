@@ -5,6 +5,7 @@ struct GroupMetadata: Identifiable, Encodable, Hashable {
     var name: String?
     var picture: String?
     var about: String?
+    var facetime: String?
     var isPublic: Bool
     var isOpen: Bool
     var isMember: Bool

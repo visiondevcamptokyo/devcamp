@@ -6,8 +6,6 @@ struct SessionDetailView: View {
     @State var inputSharePlayLink = ""
     @EnvironmentObject var appState: AppState
     let group: GroupMetadata
-    @State var groupAbout: String = ""
-    @State var faceTimeLink: String = ""
     @State var groupActivityManager: GroupActivityManager
     @StateObject private var groupStateObserver = GroupStateObserver()
     
@@ -66,7 +64,7 @@ struct SessionDetailView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
-                    Text(groupAbout)
+                    Text(group.about ?? "")
                         .font(.body)
 
                 }
@@ -95,7 +93,8 @@ struct SessionDetailView: View {
                     } else {
                         Button(action: {
                             Task{
-                                if let url = URL(string: faceTimeLink) {
+                                if let faceTimeLink = group.facetime,
+                                   let url = URL(string: faceTimeLink) {
                                     await UIApplication.shared.open(url)
                                 }
                             }
@@ -104,7 +103,7 @@ struct SessionDetailView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }
-                        .disabled(groupStateObserver.isEligibleForGroupSession ||  faceTimeLink == "")
+                        .disabled(groupStateObserver.isEligibleForGroupSession ||  group.facetime == "")
                         .tint(.green)
                         Button(action: {
                             Task {
@@ -253,15 +252,10 @@ struct SessionDetailView: View {
             .frame(maxWidth: 500)
         }
         .onAppear {
-            if let data = group.about?.data(using: .utf8),
-               let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
-                groupAbout = jsonObject["description"] ?? ""
-                faceTimeLink = jsonObject["link"] ?? ""
-            }
-            if faceTimeLink.isEmpty == true {
+            if group.facetime?.isEmpty == true {
                 sharePlayStatus = "Facetime link is not set."
             } else {
-                sharePlayStatus = faceTimeLink
+                sharePlayStatus = group.facetime ?? ""
             }
         }
     }

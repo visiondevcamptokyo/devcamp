@@ -9,7 +9,7 @@ struct SessionLinkView: View {
     @State private var maxMembers: String = ""
     @State private var groupDescription: String = ""
     @State private var selectedImage: PhotosPickerItem? = nil
-    @State private var groupImage: String? = nil
+    @State private var groupImage: String = ""
     @Binding var sheetDetail: InventoryItem?
     
     var body: some View {
@@ -56,10 +56,10 @@ struct SessionLinkView: View {
                            let jsonAboutString = String(data: jsonAboutData, encoding: .utf8) {
                             
                             if let groupId = appState.selectedEditingGroup?.id {
-                                await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, name: groupName, about: jsonAboutString)
+                                await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, picture: groupImage, name: groupName, about: jsonAboutString)
                             } else {
                                 let groupId = UUID().uuidString
-                                appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, name: groupName, about: jsonAboutString)
+                                appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, picture: groupImage, name: groupName, about: jsonAboutString)
                                 await appState.createGroup(ownerAccount: account, groupId: groupId)
                             }
                         }
@@ -80,8 +80,7 @@ struct SessionLinkView: View {
                 
                 Spacer()
 
-                if let pictureURL = groupImage,
-                   let url = URL(string: pictureURL) {
+                if let url = URL(string: groupImage) {
                     AsyncImage(url: url) { phase in
                         switch phase {
                         case .empty:
@@ -165,20 +164,9 @@ struct SessionLinkView: View {
             if let groupMetadata = appState.selectedEditingGroup {
                 groupImage = groupMetadata.picture ?? ""
                 groupName = groupMetadata.name ?? ""
-                
-                // groupMetadata.aboutがJSON文字列であることを仮定
-                if let data = groupMetadata.about?.data(using: .utf8),
-                   let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
-                    // "description"と"link"を取り出す
-                    groupDescription = jsonObject["description"] ?? ""
-                    groupLink = jsonObject["link"] ?? ""
-                } else {
-                    // JSONが解析できなかった場合はデフォルト値を設定
-                    groupDescription = ""
-                    groupLink = ""
-                }
+                groupDescription = groupMetadata.about ?? ""
+                groupLink = groupMetadata.facetime ?? ""
             }
-
         }
         // If Relay returns OK, close the sheet.
         .onReceive(appState.$shouldCloseEditSessionLinkSheet) { shouldClose in
