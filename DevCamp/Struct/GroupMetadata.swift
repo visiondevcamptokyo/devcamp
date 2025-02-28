@@ -1,4 +1,4 @@
-struct ChatGroupMetadata: Identifiable, Encodable, Hashable {
+struct GroupMetadata: Identifiable, Encodable, Hashable {
     var id: String
     var createdAt: String
     var relayUrl: String

@@ -90,7 +90,7 @@ struct HomeView: View {
     }
     
     // To get search results for allChatGroup
-    private var filteredAllGroups: [ChatGroupMetadata] {
+    private var filteredAllGroups: [GroupMetadata] {
         if searchText.isEmpty {
             return Array(appState.allChatGroup)
         } else {
@@ -101,7 +101,7 @@ struct HomeView: View {
     }
 
     // further narrow down the search results to groups to which you belong
-    private var filteredOwnedGroups: [ChatGroupMetadata] {
+    private var filteredOwnedGroups: [GroupMetadata] {
         let ownedGroups = appState.allChatGroup.filter { $0.isMember || $0.isAdmin }
         if searchText.isEmpty {
             return ownedGroups

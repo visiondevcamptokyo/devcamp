@@ -5,7 +5,7 @@ import Nostr
 struct SessionDetailView: View {
     @State var inputSharePlayLink = ""
     @EnvironmentObject var appState: AppState
-    let group: ChatGroupMetadata
+    let group: GroupMetadata
     @State var groupAbout: String = ""
     @State var faceTimeLink: String = ""
     @State var groupActivityManager: GroupActivityManager

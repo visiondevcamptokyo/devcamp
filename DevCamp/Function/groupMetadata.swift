@@ -18,7 +18,7 @@ func handleGroupMetadata(appState: AppState, event: Event) {
     dateFormatter.timeZone = TimeZone.current
     let formattedDate = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(createdAt.timestamp)))
     
-    let metadata = ChatGroupMetadata(
+    let metadata = GroupMetadata(
         id: groupId,
         createdAt: formattedDate,
         relayUrl: appState.selectedNip29Relay?.url ?? "",

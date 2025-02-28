@@ -26,13 +26,13 @@ class AppState: ObservableObject {
     @Published var selectedOwnerAccount: OwnerAccount?
     @Published var selectedNip1Relays: Array<Relay> = []
     @Published var selectedNip29Relay: Relay?
-    @Published var selectedGroup: ChatGroupMetadata? {
+    @Published var selectedGroup: GroupMetadata? {
         didSet {
             chatMessageNumResults = 50
         }
     }
-    @Published var selectedEditingGroup: ChatGroupMetadata?
-    @Published var allChatGroup: Array<ChatGroupMetadata> = []
+    @Published var selectedEditingGroup: GroupMetadata?
+    @Published var allChatGroup: Array<GroupMetadata> = []
     @Published var allChatMessage: Array<ChatMessageMetadata> = []
     @Published var allUserMetadata: Array<UserMetadata> = []
     @Published var allGroupAdmin: Array<GroupAdmin> = []
@@ -226,7 +226,7 @@ class AppState: ObservableObject {
     }
     
     // MARK: Function to join a group you haven't joined yet.
-    func joinGroup(ownerAccount: OwnerAccount, group: ChatGroupMetadata) {
+    func joinGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
@@ -248,7 +248,7 @@ class AppState: ObservableObject {
     }
     
     // TODO: Function to leave a group.
-    func leaveGroup(ownerAccount: OwnerAccount, group: ChatGroupMetadata) {
+    func leaveGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
@@ -273,7 +273,7 @@ class AppState: ObservableObject {
     
     // MARK: Function to send chat messages.
     @MainActor
-    func sendChatMessage(ownerAccount: OwnerAccount, group: ChatGroupMetadata, withText text: String) async {
+    func sendChatMessage(ownerAccount: OwnerAccount, group: GroupMetadata, withText text: String) async {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
