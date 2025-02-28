@@ -47,16 +47,25 @@ struct SessionLinkView: View {
                             print("ownerAccount not set")
                             return
                         }
+                        let aboutData: [String: String] = [
+                            "description": groupDescription,
+                            "link": groupLink
+                        ]
                         
-                        if let groupId = appState.selectedEditingGroup?.id {
-                            await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, name: groupName, about: groupDescription)
-                            await appState.editFacetimeLink(link: groupLink)
-                        } else {
-                            let groupId = UUID().uuidString
-                            appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, name: groupName, about: groupDescription, link: groupLink)
+                        if let jsonAboutData = try? JSONEncoder().encode(aboutData),
+                           let jsonAboutString = String(data: jsonAboutData, encoding: .utf8) {
                             
-                            await appState.createGroup(ownerAccount: account, groupId: groupId)
+                            if let groupId = appState.selectedEditingGroup?.id {
+                                await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, name: groupName, about: jsonAboutString)
+                            } else {
+                                let groupId = UUID().uuidString
+                                appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, name: groupName, about: jsonAboutString)
+                                await appState.createGroup(ownerAccount: account, groupId: groupId)
+                            }
                         }
+
+                        
+                        
                     }
                 }) {
                     Text("Create")
