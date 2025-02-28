@@ -17,7 +17,7 @@ class AppState: ObservableObject {
     /// ID of the last groupEditMetadata event that was sent.
     @Published var lastEditGroupMetadataEventId: String?
     @Published var lastCreateGroupMetadataEventId: String?
-    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, name: String?, about: String?, link: String?)
+    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, name: String?, about: String?)
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
     @Published var shouldCloseEditSessionLinkSheet: Bool = false
@@ -607,15 +607,13 @@ extension AppState: NostrClientDelegate {
                         guard let ownerAccount = self.createdGroupMetadata.ownerAccount,
                               let groupId = self.createdGroupMetadata.groupId,
                               let name = self.createdGroupMetadata.name,
-                              let about = self.createdGroupMetadata.about,
-                              let link = self.createdGroupMetadata.link else {
+                              let about = self.createdGroupMetadata.about else {
                             print("Missing required metadata for editing group")
                             return
                         }
                         try? await Task.sleep(nanoseconds: 1_000_000_000)
                         await self.subscribeGroupAdminAndMembers()
                         await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, name: name, about: about)
-                        await self.editFacetimeLink(link: link)
                     }
                 }
             case .eose(let id):
