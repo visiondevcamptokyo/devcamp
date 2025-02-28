@@ -15,29 +15,29 @@ struct GroupCard: View {
                         switch phase {
                             case .empty:
                                 ProgressView()
-                                    .frame(width: 250, height: 250)
+                                    .frame(width: 200, height: 200)
                                     .cornerRadius(12)
                             case .success(let image):
                                 image
                                     .resizable()
-                                    .frame(width: 250, height: 250)
+                                    .frame(width: 200, height: 200)
                                     .cornerRadius(12)
                             case .failure:
                                 Image("noImage")
                                     .resizable()
-                                    .frame(width: 250, height: 250)
+                                    .frame(width: 200, height: 200)
                                     .cornerRadius(12)
                             @unknown default:
                                 Image("noImage")
                                     .resizable()
-                                    .frame(width: 250, height: 250)
+                                    .frame(width: 200, height: 200)
                                     .cornerRadius(12)
                         }
                     }
                 } else {
                     Image("noImage")
                         .resizable()
-                        .frame(width: 250, height: 250)
+                        .frame(width: 200, height: 200)
                         .cornerRadius(12)
                 }
             }
@@ -46,7 +46,8 @@ struct GroupCard: View {
                     Spacer()
                     HStack {
                         Text(group.name ?? "")
-                            .font(.headline)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                             .foregroundColor(.white)
                         Spacer()
                         HStack {
