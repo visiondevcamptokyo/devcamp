@@ -165,9 +165,20 @@ struct SessionLinkView: View {
             if let groupMetadata = appState.selectedEditingGroup {
                 groupImage = groupMetadata.picture ?? ""
                 groupName = groupMetadata.name ?? ""
-                groupDescription = groupMetadata.about ?? ""
-                groupLink = fetchAdminUserMetadata().first?.facetime ?? ""
+                
+                // groupMetadata.aboutがJSON文字列であることを仮定
+                if let data = groupMetadata.about?.data(using: .utf8),
+                   let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+                    // "description"と"link"を取り出す
+                    groupDescription = jsonObject["description"] ?? ""
+                    groupLink = jsonObject["link"] ?? ""
+                } else {
+                    // JSONが解析できなかった場合はデフォルト値を設定
+                    groupDescription = ""
+                    groupLink = ""
+                }
             }
+
         }
         // If Relay returns OK, close the sheet.
         .onReceive(appState.$shouldCloseEditSessionLinkSheet) { shouldClose in

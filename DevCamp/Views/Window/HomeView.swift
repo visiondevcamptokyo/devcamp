@@ -123,7 +123,7 @@ struct HomeView: View {
         
         appState.lastEditGroupMetadataEventId = nil
         appState.lastCreateGroupMetadataEventId = nil
-        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil, link: nil)
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, name: nil, about: nil)
         appState.shouldCloseEditSessionLinkSheet = false
         appState.selectedOwnerAccount = nil
         appState.selectedNip1Relays = []
