@@ -21,3 +21,4 @@ With photorealistic avatars and an immersive shared space, DevCamp brings the fe
 4. Select the session you want to attend and start FaceTime.
 
 If you don’t have anyone to test it with, feel free to book a session here.
+https://cal.com/devcamp
