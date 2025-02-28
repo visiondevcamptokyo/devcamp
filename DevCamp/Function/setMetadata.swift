@@ -60,9 +60,6 @@ private func decodeUserMetadata(from content: String) -> (
 
 private func createUserMetadata(from event: Event, name: String?, about: String?, picture: String?, nip05: String?, displayName: String?, website: String?, banner: String?, bot: Bool?, lud16: String?) -> UserMetadata {
     
-    let tags = event.tags.map({ $0 })
-    let link = tags.first(where: { $0.id == "facetime" })?.otherInformation.first
-    
     return UserMetadata(
         publicKey: event.pubkey,
         bech32PublicKey: {
@@ -80,8 +77,7 @@ private func createUserMetadata(from event: Event, name: String?, about: String?
         banner: banner,
         bot: bot,
         lud16: lud16,
-        createdAt: event.createdAt.date,
-        facetime: link
+        createdAt: event.createdAt.date
     )
 }
 

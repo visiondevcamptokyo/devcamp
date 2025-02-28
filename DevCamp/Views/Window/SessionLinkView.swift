@@ -9,7 +9,7 @@ struct SessionLinkView: View {
     @State private var maxMembers: String = ""
     @State private var groupDescription: String = ""
     @State private var selectedImage: PhotosPickerItem? = nil
-    @State private var groupImage: String? = nil
+    @State private var groupImage: String = ""
     @Binding var sheetDetail: InventoryItem?
     
     var body: some View {
@@ -47,16 +47,25 @@ struct SessionLinkView: View {
                             print("ownerAccount not set")
                             return
                         }
+                        let aboutData: [String: String] = [
+                            "description": groupDescription,
+                            "link": groupLink
+                        ]
                         
-                        if let groupId = appState.selectedEditingGroup?.id {
-                            await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, name: groupName, about: groupDescription)
-                            await appState.editFacetimeLink(link: groupLink)
-                        } else {
-                            let groupId = UUID().uuidString
-                            appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, name: groupName, about: groupDescription, link: groupLink)
+                        if let jsonAboutData = try? JSONEncoder().encode(aboutData),
+                           let jsonAboutString = String(data: jsonAboutData, encoding: .utf8) {
                             
-                            await appState.createGroup(ownerAccount: account, groupId: groupId)
+                            if let groupId = appState.selectedEditingGroup?.id {
+                                await appState.editGroupMetadata(ownerAccount: account, groupId: groupId, picture: groupImage, name: groupName, about: jsonAboutString)
+                            } else {
+                                let groupId = UUID().uuidString
+                                appState.createdGroupMetadata = (ownerAccount: account, groupId: groupId, picture: groupImage, name: groupName, about: jsonAboutString)
+                                await appState.createGroup(ownerAccount: account, groupId: groupId)
+                            }
                         }
+
+                        
+                        
                     }
                 }) {
                     Text("Create")
@@ -71,8 +80,7 @@ struct SessionLinkView: View {
                 
                 Spacer()
 
-                if let pictureURL = groupImage,
-                   let url = URL(string: pictureURL) {
+                if let url = URL(string: groupImage) {
                     AsyncImage(url: url) { phase in
                         switch phase {
                         case .empty:
@@ -157,7 +165,7 @@ struct SessionLinkView: View {
                 groupImage = groupMetadata.picture ?? ""
                 groupName = groupMetadata.name ?? ""
                 groupDescription = groupMetadata.about ?? ""
-                groupLink = fetchAdminUserMetadata().first?.facetime ?? ""
+                groupLink = groupMetadata.facetime ?? ""
             }
         }
         // If Relay returns OK, close the sheet.

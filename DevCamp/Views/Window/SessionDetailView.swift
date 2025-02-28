@@ -5,7 +5,7 @@ import Nostr
 struct SessionDetailView: View {
     @State var inputSharePlayLink = ""
     @EnvironmentObject var appState: AppState
-    let group: ChatGroupMetadata
+    let group: GroupMetadata
     @State var groupActivityManager: GroupActivityManager
     @StateObject private var groupStateObserver = GroupStateObserver()
     
@@ -76,7 +76,7 @@ struct SessionDetailView: View {
                     if groupActivityManager.isSharePlaying {
                         Button(action: {
                             Task {
-                                // SharePlayセッションを終了する
+                                // End The SharePlay Session
                                 let didActivate = await groupActivityManager.endSession()
                                 if didActivate {
                                     sharePlayStatus = "You have withdrawn from the session."
@@ -93,9 +93,8 @@ struct SessionDetailView: View {
                     } else {
                         Button(action: {
                             Task{
-                                // TODO: We need to omit the condition that there are multiple
-                                let faceTimeLink = fetchAdminUserMetadata().first?.facetime ?? ""
-                                if let url = URL(string: faceTimeLink) {
+                                if let faceTimeLink = group.facetime,
+                                   let url = URL(string: faceTimeLink) {
                                     await UIApplication.shared.open(url)
                                 }
                             }
@@ -104,7 +103,7 @@ struct SessionDetailView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }
-                        .disabled(groupStateObserver.isEligibleForGroupSession || fetchAdminUserMetadata().first?.facetime == nil || fetchAdminUserMetadata().first?.facetime == "")
+                        .disabled(groupStateObserver.isEligibleForGroupSession ||  group.facetime == "")
                         .tint(.green)
                         Button(action: {
                             Task {
@@ -253,11 +252,10 @@ struct SessionDetailView: View {
             .frame(maxWidth: 500)
         }
         .onAppear {
-            let faceTimeLink = fetchAdminUserMetadata().first?.facetime
-            if faceTimeLink == nil || faceTimeLink?.isEmpty == true {
+            if group.facetime?.isEmpty == true {
                 sharePlayStatus = "Facetime link is not set."
             } else {
-                sharePlayStatus = faceTimeLink!
+                sharePlayStatus = group.facetime ?? ""
             }
         }
     }

@@ -5,7 +5,7 @@ struct GroupCard: View {
     @State var groupActivityManager: GroupActivityManager
     @State private var isShowingDetail = false
     
-    let group: ChatGroupMetadata
+    let group: GroupMetadata
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -89,7 +89,7 @@ struct GroupCard: View {
 
 
 struct GroupListView: View {
-    let groups: Array<ChatGroupMetadata>
+    let groups: Array<GroupMetadata>
     @EnvironmentObject var appState: AppState
     @State var groupActivityManager: GroupActivityManager
     

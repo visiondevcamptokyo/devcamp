@@ -17,7 +17,7 @@ class AppState: ObservableObject {
     /// ID of the last groupEditMetadata event that was sent.
     @Published var lastEditGroupMetadataEventId: String?
     @Published var lastCreateGroupMetadataEventId: String?
-    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, name: String?, about: String?, link: String?)
+    @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, picture: String?, name: String?, about: String?)
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
     @Published var shouldCloseEditSessionLinkSheet: Bool = false
@@ -26,13 +26,13 @@ class AppState: ObservableObject {
     @Published var selectedOwnerAccount: OwnerAccount?
     @Published var selectedNip1Relays: Array<Relay> = []
     @Published var selectedNip29Relay: Relay?
-    @Published var selectedGroup: ChatGroupMetadata? {
+    @Published var selectedGroup: GroupMetadata? {
         didSet {
             chatMessageNumResults = 50
         }
     }
-    @Published var selectedEditingGroup: ChatGroupMetadata?
-    @Published var allChatGroup: Array<ChatGroupMetadata> = []
+    @Published var selectedEditingGroup: GroupMetadata?
+    @Published var allChatGroup: Array<GroupMetadata> = []
     @Published var allChatMessage: Array<ChatMessageMetadata> = []
     @Published var allUserMetadata: Array<UserMetadata> = []
     @Published var allGroupAdmin: Array<GroupAdmin> = []
@@ -226,7 +226,7 @@ class AppState: ObservableObject {
     }
     
     // MARK: Function to join a group you haven't joined yet.
-    func joinGroup(ownerAccount: OwnerAccount, group: ChatGroupMetadata) {
+    func joinGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
@@ -248,7 +248,7 @@ class AppState: ObservableObject {
     }
     
     // TODO: Function to leave a group.
-    func leaveGroup(ownerAccount: OwnerAccount, group: ChatGroupMetadata) {
+    func leaveGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
@@ -273,7 +273,7 @@ class AppState: ObservableObject {
     
     // MARK: Function to send chat messages.
     @MainActor
-    func sendChatMessage(ownerAccount: OwnerAccount, group: ChatGroupMetadata, withText text: String) async {
+    func sendChatMessage(ownerAccount: OwnerAccount, group: GroupMetadata, withText text: String) async {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
         let groupId = group.id
@@ -349,60 +349,9 @@ class AppState: ObservableObject {
         
     }
     
-    // MARK: Function used to edit FaceTime links
-    @MainActor
-    func editFacetimeLink(
-        link: String
-    )  async{
-        guard let key = self.selectedOwnerAccount?.getKeyPair() else {
-            print("KeyPair not found.")
-            return
-        }
-        
-        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
-        
-        let ownerAccount = self.allUserMetadata.filter { $0.publicKey == self.selectedOwnerAccount?.publicKey }.first
-        
-        let metadata: [String: String?] = [
-            "name": ownerAccount?.name,
-            "about": ownerAccount?.about,
-            "picture": ownerAccount?.picture,
-            "nip05": ownerAccount?.nip05,
-            "display_name": ownerAccount?.displayName,
-            "website": ownerAccount?.website,
-            "banner": ownerAccount?.banner,
-            "bot": ownerAccount?.bot?.description ?? "false",
-            "lud16": ownerAccount?.lud16
-        ]
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: metadata),
-              let jsonString = String(data: jsonData, encoding: .utf8) else {
-            return
-        }
-        
-        let tags: [Tag] = [
-            Tag(id: "facetime", otherInformation: link),
-        ]
-        
-        var event = Event(
-            pubkey: self.selectedOwnerAccount?.publicKey ?? "",
-            createdAt: .init(),
-            kind: Kind.setMetadata,
-            tags: tags,
-            content: jsonString
-        )
-        
-        do {
-            try event.sign(with: key)
-            
-            nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
-        } catch {
-            print("Failed to sign or send event: \(error)")
-        }
-    }
-    
     /// Edit the group's metadata
     @MainActor
-    func editGroupMetadata(ownerAccount: OwnerAccount, groupId: String, name: String, about: String) async {
+    func editGroupMetadata(ownerAccount: OwnerAccount, groupId: String, picture: String, name: String, about: String) async {
         guard let key = ownerAccount.getKeyPair() else {
             print("KeyPair not found.")
             return
@@ -415,6 +364,7 @@ class AppState: ObservableObject {
         
         let tags: [Tag] = [
             Tag(id: "h", otherInformation: groupId),
+            Tag(id: "picture", otherInformation: [picture]),
             Tag(id: "name", otherInformation: [name]),
             Tag(id: "about", otherInformation: [about]),
         ]
@@ -606,16 +556,15 @@ extension AppState: NostrClientDelegate {
                     Task {
                         guard let ownerAccount = self.createdGroupMetadata.ownerAccount,
                               let groupId = self.createdGroupMetadata.groupId,
+                              let picture = self.createdGroupMetadata.picture,
                               let name = self.createdGroupMetadata.name,
-                              let about = self.createdGroupMetadata.about,
-                              let link = self.createdGroupMetadata.link else {
+                              let about = self.createdGroupMetadata.about else {
                             print("Missing required metadata for editing group")
                             return
                         }
                         try? await Task.sleep(nanoseconds: 1_000_000_000)
                         await self.subscribeGroupAdminAndMembers()
-                        await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, name: name, about: about)
-                        await self.editFacetimeLink(link: link)
+                        await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, picture: picture, name: name, about: about)
                     }
                 }
             case .eose(let id):

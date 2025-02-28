@@ -16,7 +16,7 @@ class GroupActivityManager {
     // MARK: Start SharePlay session
     func startSession() async {
         do {
-            let _ = try await DevCampActivity().activate()
+            _ = try await DevCampActivity().activate()
         } catch {
             print("Failed to activate DevCampActivity: \(error)")
         }

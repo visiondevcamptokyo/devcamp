@@ -12,7 +12,7 @@
 //    }
 //    
 //    
-//    private var sortedGroups: [ChatGroupMetadata] {
+//    private var sortedGroups: [GroupMetadata] {
 //        appState.allChatGroup.sorted { group1, group2 in
 //            let lastMessage1 = latestMessage(for: group1.id)
 //            let lastMessage2 = latestMessage(for: group2.id)
