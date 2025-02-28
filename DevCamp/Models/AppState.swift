@@ -349,57 +349,6 @@ class AppState: ObservableObject {
         
     }
     
-    // MARK: Function used to edit FaceTime links
-    @MainActor
-    func editFacetimeLink(
-        link: String
-    )  async{
-        guard let key = self.selectedOwnerAccount?.getKeyPair() else {
-            print("KeyPair not found.")
-            return
-        }
-        
-        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
-        
-        let ownerAccount = self.allUserMetadata.filter { $0.publicKey == self.selectedOwnerAccount?.publicKey }.first
-        
-        let metadata: [String: String?] = [
-            "name": ownerAccount?.name,
-            "about": ownerAccount?.about,
-            "picture": ownerAccount?.picture,
-            "nip05": ownerAccount?.nip05,
-            "display_name": ownerAccount?.displayName,
-            "website": ownerAccount?.website,
-            "banner": ownerAccount?.banner,
-            "bot": ownerAccount?.bot?.description ?? "false",
-            "lud16": ownerAccount?.lud16
-        ]
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: metadata),
-              let jsonString = String(data: jsonData, encoding: .utf8) else {
-            return
-        }
-        
-        let tags: [Tag] = [
-            Tag(id: "facetime", otherInformation: link),
-        ]
-        
-        var event = Event(
-            pubkey: self.selectedOwnerAccount?.publicKey ?? "",
-            createdAt: .init(),
-            kind: Kind.setMetadata,
-            tags: tags,
-            content: jsonString
-        )
-        
-        do {
-            try event.sign(with: key)
-            
-            nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
-        } catch {
-            print("Failed to sign or send event: \(error)")
-        }
-    }
-    
     /// Edit the group's metadata
     @MainActor
     func editGroupMetadata(ownerAccount: OwnerAccount, groupId: String, name: String, about: String) async {
