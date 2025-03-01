@@ -10,64 +10,66 @@ struct HomeView: View {
     @State private var sheetDetail: InventoryItem?
 
     var body: some View {
-        ScrollView {
-            VStack {
-                Spacer().frame(height: 10)
-                
+        
+        VStack {
+            Spacer().frame(height: 10)
+            
+            HStack {
+                Spacer()
                 HStack {
+                    TextField("Search", text: $searchText)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.gray.opacity(0.4))
+                        .cornerRadius(32)
+                        .frame(width: 500)
+                        .frame(height: 40)
                     Spacer()
-                    HStack {
-                        TextField("Search", text: $searchText)
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.gray.opacity(0.4))
-                            .cornerRadius(32)
-                            .frame(width: 500)
-                            .frame(height: 40)
-                        Spacer()
-                    }
-                    .padding()
-                    .foregroundColor(Color.gray.opacity(0.4))
-                    .cornerRadius(12)
-                    .frame(height: 40)
-                    
-                    Spacer()
-                    
-                    Button("Reload"){
-                        Task {
-                            await resetState()
-                            await appState.setupYourOwnMetadata()
-                            await appState.subscribeGroupMetadata()
-                        }
-                    }
-                    .padding(.trailing, 10)
-                    
-                    Button("+ Start Session") {
-                        sheetDetail = InventoryItem(
-                            id: "0123456789",
-                            partNumber: "Z-1234A",
-                            quantity: 100,
-                            name: "Widget")
-                    }
-                    .sheet(item: $sheetDetail) { detail in
-                        VStack(alignment: .leading, spacing: 20) {
-                            CreateSessionView(sheetDetail: $sheetDetail)
-                        }
-                        .presentationDetents([
-                            .large,
-                            .large,
-                            .height(300),
-                            .fraction(1.0),
-                        ])
-                    }
-                    
                 }
+                .padding()
+                .foregroundColor(Color.gray.opacity(0.4))
+                .cornerRadius(12)
+                .frame(height: 40)
+                
+                Spacer()
+                
+                Button("Reload"){
+                    Task {
+                        await resetState()
+                        await appState.setupYourOwnMetadata()
+                        await appState.subscribeGroupMetadata()
+                    }
+                }
+                .padding(.trailing, 10)
+                
+                Button("+ Create Session") {
+                    sheetDetail = InventoryItem(
+                        id: "0123456789",
+                        partNumber: "Z-1234A",
+                        quantity: 100,
+                        name: "Widget")
+                }
+                .sheet(item: $sheetDetail) { detail in
+                    VStack(alignment: .leading, spacing: 20) {
+                        CreateSessionView(sheetDetail: $sheetDetail)
+                    }
+                    .presentationDetents([
+                        .large,
+                        .large,
+                        .height(300),
+                        .fraction(1.0),
+                    ])
+                }
+            }
+            .padding([.top, .leading, .trailing], 16)
+            
+            ScrollView {
                 
                 VStack(alignment: .leading) {
                     
                     Spacer().frame(height: 30)
                     
-                    Text("Recent Groups")
+                    Text("Latest Sessions")
                         .font(.title2.bold())
                         .padding(.leading, 16)
                     
@@ -75,11 +77,19 @@ struct HomeView: View {
                     
                     Spacer().frame(height: 30)
                     
-                    Text("Groups you belong to")
+                    Text("Sessions you belong to")
                         .font(.title2.bold())
                         .padding(.leading, 16)
                     
                     GroupListView(groups: filteredOwnedGroups, groupActivityManager: groupActivityManager)
+                    
+                    Spacer().frame(height: 30)
+                    
+                    Text("Sessions you are an administrator of")
+                        .font(.title2.bold())
+                        .padding(.leading, 16)
+                    
+                    GroupListView(groups: filteredAdminGroups, groupActivityManager: groupActivityManager)
                     
                     Spacer()
                 }
@@ -107,6 +117,18 @@ struct HomeView: View {
             return ownedGroups
         } else {
             return ownedGroups.filter { group in
+                group.name?.localizedCaseInsensitiveContains(searchText) ?? false
+            }
+        }
+    }
+    
+    // further narrow down the search results to groups to which you are an administrator
+    private var filteredAdminGroups: [GroupMetadata] {
+        let adminGroups = appState.allChatGroup.filter { $0.isAdmin }
+        if searchText.isEmpty {
+            return adminGroups
+        } else {
+            return adminGroups.filter { group in
                 group.name?.localizedCaseInsensitiveContains(searchText) ?? false
             }
         }
