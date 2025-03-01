@@ -51,7 +51,7 @@ struct HomeView: View {
                 }
                 .sheet(item: $sheetDetail) { detail in
                     VStack(alignment: .leading, spacing: 20) {
-                        CreateSessionView(sheetDetail: $sheetDetail)
+                        SessionLinkView(sheetDetail: $sheetDetail)
                     }
                     .presentationDetents([
                         .large,
