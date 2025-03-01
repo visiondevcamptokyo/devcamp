@@ -1,0 +1,25 @@
+# What is DevCamp?
+
+<!-- DevCamp is a  community-driven experimental visionOS application created to serve as VisionDevCamp’s digital gathering space. Despite not being an official app, it’s born from a global developer community and aims to nurture an open, decentralized ecosystem. With photorealistic avatars and an immersive shared space, DevCamp brings the feeling of face-to-face communication anywhere in the world, no matter where you are. -->
+
+DevCamp is a VRChat-like nostr client for visionOS.
+
+In a nutshell, it allows people to gather in a digital space built on an open protocol to interact and share content and experiences as if they were face-to-face.
+
+<div class="tip custom-block" style="padding-top: 8px">
+
+Just want to try it out? Skip to the [Quickstart](./getting-started).
+
+</div>
+
+## The Why
+
+
+
+
+## What's the differences from VRChat?
+
+The main differences from VRChat are as follows:
+1. It adopts the open protocol called nostr, designed for building decentralized, censorship-resistant social media.
+2. It provides near face-to-face communication through photorealistic avatars.
+3. It has a simple design optimized for communication and collaboration, keeping entertainment elements to a minimum.

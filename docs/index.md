@@ -5,14 +5,17 @@ layout: home
 hero:
   name: "DevCamp"
   text: "VisionDevCamp's Digital Gathering Spaces"
-  tagline: My great project tagline
+  tagline: A VRChat-like nostr client for visionOS
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: What is DevCamp?
+      link: /what-is-devcamp
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Get Started
+      link: /get-started
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/visiondevcamptokyo/devcamp
 
 features:
   - title: Feature A
