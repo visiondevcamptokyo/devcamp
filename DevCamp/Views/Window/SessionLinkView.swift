@@ -10,7 +10,6 @@ struct SessionLinkView: View {
     @State private var groupDescription: String = ""
     @State private var selectedImage: PhotosPickerItem? = nil
     @State private var groupImage: String = ""
-    @Binding var sheetDetail: InventoryItem?
     
     var body: some View {
             
@@ -18,19 +17,19 @@ struct SessionLinkView: View {
             
             HStack {
                 Button(action: {
+                    appState.isSheetPresented = false
                     appState.selectedEditingGroup = nil
-                    sheetDetail = nil
                 }) {
                     Image(systemName: "xmark")
                         .resizable()
                         .foregroundColor(.white)
                         .frame(width: 15, height: 15)
+                        .padding(10)
                 }
-                .frame(width: 15, height: 15)
+                .frame(width: 40, height: 40)
                 .contentShape(Circle())
                 .padding(.leading, 30)
                 .padding(.bottom)
-                
                 
                 Spacer()
                 
@@ -63,9 +62,6 @@ struct SessionLinkView: View {
                                 await appState.createGroup(ownerAccount: account, groupId: groupId)
                             }
                         }
-
-                        
-                        
                     }
                 }) {
                     Text("Create")
@@ -118,9 +114,7 @@ struct SessionLinkView: View {
                                 
                                 Text("Add Image")
                                     .foregroundColor(.gray)
-                                
                             }
-                            
                         }
                         .frame(width: 180, height: 180)
                     }
@@ -166,13 +160,6 @@ struct SessionLinkView: View {
                 groupName = groupMetadata.name ?? ""
                 groupDescription = groupMetadata.about ?? ""
                 groupLink = groupMetadata.facetime ?? ""
-            }
-        }
-        // If Relay returns OK, close the sheet.
-        .onReceive(appState.$shouldCloseEditSessionLinkSheet) { shouldClose in
-            if shouldClose {
-                sheetDetail = nil
-                appState.shouldCloseEditSessionLinkSheet = false
             }
         }
 

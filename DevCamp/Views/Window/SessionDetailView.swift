@@ -9,8 +9,6 @@ struct SessionDetailView: View {
     @State var groupActivityManager: GroupActivityManager
     @StateObject private var groupStateObserver = GroupStateObserver()
     
-    @State private var sharePlayStatus: String = ""
-    
     var body: some View {
         HStack {
 //            PersonaCameraView()
@@ -54,22 +52,45 @@ struct SessionDetailView: View {
                         Text(group.name ?? "")
                             .font(.title)
                             .bold()
+                        
+                        Spacer()
+                        
+                        if appState.allChatGroup.filter({ $0.isAdmin }).contains(where: { $0.id == group.id }) {
+                            Button(action: {
+                                appState.selectedEditingGroup = group
+                                appState.isSheetPresented = true
+                            }) {
+                                Text("Edit")
+                                    .foregroundColor(.white)
+                            }
+                            .sheet(isPresented: $appState.isSheetPresented) {
+                                VStack(alignment: .leading, spacing: 20) {
+                                    SessionLinkView()
+                                }
+                                .presentationDetents([
+                                    .large,
+                                    .large,
+                                    .height(300),
+                                    .fraction(1.0),
+                                ])
+                            }
+                        }
                     }
                     HStack(spacing: 8) {
                         Text("By")
                             .font(.subheadline)
                             .foregroundColor(.gray)
-
+                        
                         Text(fetchAdminUserMetadata().first?.displayName ?? "")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                     Text(group.about ?? "")
                         .font(.body)
-
+                    
                 }
                 .padding(.horizontal)
-
+                
                 
                 HStack(spacing: 20) {
                     // MARK: When a SharePlay session has already been established
@@ -77,19 +98,14 @@ struct SessionDetailView: View {
                         Button(action: {
                             Task {
                                 // End The SharePlay Session
-                                let didActivate = await groupActivityManager.endSession()
-                                if didActivate {
-                                    sharePlayStatus = "You have withdrawn from the session."
-                                } else {
-                                    sharePlayStatus = "Failed to leave session."
-                                }
+                                await groupActivityManager.endSession()
                             }
                         }) {
                             Text("Leave Chat")
                                 .frame(maxWidth: .infinity)
                                 .padding()
                         }.tint(.red)
-                    // MARK: When a Shareplay session has not been established
+                        // MARK: When a Shareplay session has not been established
                     } else {
                         Button(action: {
                             Task{
@@ -109,18 +125,10 @@ struct SessionDetailView: View {
                             Task {
                                 let activationResult = await DevCampActivity().prepareForActivation()
                                 switch activationResult {
-                                    case .activationPreferred:
-                                        await groupActivityManager.startSession()
-                                        sharePlayStatus = "You are in session."
-
-                                    case .activationDisabled:
-
-                                        sharePlayStatus = "SharePlay is not available"
-                                    
-                                    case .cancelled:
-                                        sharePlayStatus = "SharePlay is not available"
-                                    @unknown default:
-                                        sharePlayStatus = "An unexpected error has occurred."
+                                case .activationPreferred:
+                                    await groupActivityManager.startSession()
+                                default:
+                                    break
                                 }
                             }
                         }) {
@@ -134,10 +142,18 @@ struct SessionDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                Text(sharePlayStatus)
-                    .foregroundColor(.blue)
-                    .font(.caption)
-                    .padding(.horizontal)
+                if let facetimeLink = group.facetime, !facetimeLink.isEmpty {
+                    Text(facetimeLink)
+                        .foregroundColor(.blue)
+                        .font(.caption)
+                        .padding(.horizontal)
+                } else {
+                    Text("FaceTime Link is not available")
+                        .foregroundColor(.blue)
+                        .font(.caption)
+                        .padding(.horizontal)
+                }
+                
 
                 VStack(alignment: .leading, spacing: 5) {
                     Text("Admin")
@@ -250,13 +266,6 @@ struct SessionDetailView: View {
             .padding(.vertical)
             .padding(.trailing, 100)
             .frame(maxWidth: 500)
-        }
-        .onAppear {
-            if group.facetime?.isEmpty == true {
-                sharePlayStatus = "Facetime link is not set."
-            } else {
-                sharePlayStatus = group.facetime ?? ""
-            }
         }
     }
                          

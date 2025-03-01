@@ -101,7 +101,7 @@ struct LogoutConfirmationView: View {
         appState.lastEditGroupMetadataEventId = nil
         appState.lastCreateGroupMetadataEventId = nil
         appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
-        appState.shouldCloseEditSessionLinkSheet = false
+        appState.isSheetPresented = false
         appState.registeredNsec = false
         appState.selectedOwnerAccount = nil
         appState.selectedNip1Relays = []

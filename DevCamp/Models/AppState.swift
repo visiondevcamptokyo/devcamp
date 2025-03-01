@@ -20,7 +20,7 @@ class AppState: ObservableObject {
     @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, picture: String?, name: String?, about: String?)
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
-    @Published var shouldCloseEditSessionLinkSheet: Bool = false
+    @Published var isSheetPresented: Bool = false
     
     @Published var registeredNsec: Bool = true
     @Published var selectedOwnerAccount: OwnerAccount?
@@ -546,7 +546,8 @@ extension AppState: NostrClientDelegate {
                    acceptance == true
                 {
                     DispatchQueue.main.async {
-                        self.shouldCloseEditSessionLinkSheet = true
+                        self.isSheetPresented = false
+                        self.selectedEditingGroup = nil
                     }
                 }
                 
