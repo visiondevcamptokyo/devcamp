@@ -1,6 +1,7 @@
 import Foundation
 
-struct UserMetadata: Encodable, Hashable {
+struct UserMetadata: Encodable, Hashable, Identifiable {
+    var id: String { publicKey }  // Use publicKey as the unique identifier
     var publicKey: String
     var bech32PublicKey: String
     var name: String?
@@ -14,3 +15,4 @@ struct UserMetadata: Encodable, Hashable {
     var lud16: String?
     var createdAt: Date
 }
+

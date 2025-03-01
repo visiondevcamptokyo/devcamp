@@ -8,6 +8,7 @@ struct SessionDetailView: View {
     let group: GroupMetadata
     @State var groupActivityManager: GroupActivityManager
     @StateObject private var groupStateObserver = GroupStateObserver()
+    @State private var selectedUser: UserMetadata?
     
     var body: some View {
         HStack {
@@ -204,6 +205,9 @@ struct SessionDetailView: View {
                             }
                         }
                         .padding(.vertical, 5)
+                        .onTapGesture {
+                            selectedUser = user
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -257,6 +261,30 @@ struct SessionDetailView: View {
                                 }
                             }
                             .padding(.vertical, 5)
+                            .onTapGesture {
+                                selectedUser = user
+                            }
+                        }
+                        .sheet(item: $selectedUser) { user in
+                            NavigationView {
+                                UserDetailView(user: user)
+                                    .navigationTitle(user.displayName ?? user.name ?? "User Detail")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                        ToolbarItem(placement: .cancellationAction) {
+                                            Button {
+                                                selectedUser = nil
+                                            } label: {
+                                                Image(systemName: "xmark")
+                                                    .resizable()
+                                                    .scaledToFit()
+                                                    .frame(width: 15, height: 15)
+                                                    .foregroundColor(.white)
+                                            }
+                                        }
+                                    }
+                            }
+                            .presentationDetents([.medium, .large])  // 必要に応じてサイズ調整
                         }
                     }}
                     .padding(.horizontal)
@@ -299,3 +327,97 @@ struct SessionDetailView: View {
         return memberMetadatas
     }
 }
+
+struct UserDetailView: View {
+    let user: UserMetadata
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                
+                // ユーザー画像
+                Group {
+                    if let pictureURL = user.picture,
+                       let url = URL(string: pictureURL) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: 200, height: 200)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 200, height: 200)
+                            case .failure:
+                                Text("No Image")
+                                    .frame(width: 200, height: 200)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(10)
+                            @unknown default:
+                                Text("Unknown status")
+                                    .frame(width: 200, height: 200)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(10)
+                            }
+                        }
+                    } else {
+                        Text("No Image")
+                            .frame(width: 200, height: 200)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(10)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .center)  // 画像を中央に配置
+                
+                // Public Key
+                Group {
+                    Text("Public Key")
+                        .font(.title2.bold()) // タイトルを大きめに
+                    if let npubkey = try? user.publicKey.bech32FromHex(hrp: "npub") {
+                        Text(npubkey)
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 2)
+                    } else {
+                        Text("No public key available")
+                            .foregroundColor(.red)
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .padding(.top, 2)
+                    }
+                }
+                
+                Divider().padding(.vertical, 8) // 区切り線
+                
+                // Name
+                Group {
+                    Text("Name")
+                        .font(.title2.bold())
+                    Text(user.displayName ?? user.name ?? "Unknown")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 2)
+                }
+                
+                Divider().padding(.vertical, 8)
+                
+                // About
+                Group {
+                    Text("About")
+                        .font(.title2.bold())
+                    Text(user.about ?? "No information available")
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .padding(.top, 2)
+                        .lineLimit(nil)
+                }
+            }
+            .padding(32)
+        }
+        .background(Color(UIColor.systemGroupedBackground))
+    }
+}
+
+
+
