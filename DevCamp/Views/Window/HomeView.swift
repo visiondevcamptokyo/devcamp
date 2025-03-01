@@ -43,15 +43,11 @@ struct HomeView: View {
                 .padding(.trailing, 10)
                 
                 Button("+ Create Session") {
-                    sheetDetail = InventoryItem(
-                        id: "0123456789",
-                        partNumber: "Z-1234A",
-                        quantity: 100,
-                        name: "Widget")
+                    appState.isSheetPresented = true
                 }
-                .sheet(item: $sheetDetail) { detail in
+                .sheet(isPresented: $appState.isSheetPresented) {
                     VStack(alignment: .leading, spacing: 20) {
-                        SessionLinkView(sheetDetail: $sheetDetail)
+                        SessionLinkView()
                     }
                     .presentationDetents([
                         .large,
@@ -146,7 +142,7 @@ struct HomeView: View {
         appState.lastEditGroupMetadataEventId = nil
         appState.lastCreateGroupMetadataEventId = nil
         appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
-        appState.shouldCloseEditSessionLinkSheet = false
+        appState.isSheetPresented = false
         appState.selectedOwnerAccount = nil
         appState.selectedNip1Relays = []
         appState.selectedNip29Relay = nil
