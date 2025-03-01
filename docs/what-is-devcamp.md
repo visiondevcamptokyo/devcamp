@@ -8,7 +8,7 @@ In a nutshell, it allows people to gather in a digital space built on an open pr
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-Just want to try it out? Skip to the [Quickstart](./getting-started).
+Just want to try it out? Skip to the [Quickstart](./get-started).
 
 </div>
 
