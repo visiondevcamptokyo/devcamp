@@ -11,6 +11,10 @@ struct SessionLinkView: View {
     @State private var selectedImage: PhotosPickerItem? = nil
     @State private var groupImage: String = ""
     
+    private var isFaceTimeLinkValid: Bool {
+        groupLink.hasPrefix("https://facetime")
+    }
+    
     var body: some View {
             
         VStack(alignment: .leading, spacing: 20) {
@@ -41,6 +45,11 @@ struct SessionLinkView: View {
                 Spacer()
                 
                 Button(action: {
+                    guard isFaceTimeLinkValid else {
+                        print("誤った形式です")
+                        return
+                    }
+                    
                     Task {
                         guard let account = appState.selectedOwnerAccount else {
                             print("ownerAccount not set")
@@ -147,6 +156,11 @@ struct SessionLinkView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(8)
+                
+                if !isFaceTimeLinkValid && !groupLink.isEmpty {
+                    Text(verbatim: "The link must begin with “https://facetime”.")
+                        .foregroundColor(.red)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 60)
