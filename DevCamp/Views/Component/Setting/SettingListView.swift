@@ -4,6 +4,7 @@ import SwiftData
 struct SettingListView: View {
     @Binding var selectedSetting: SettingItem?
     @State private var isShowingLogoutModal = false
+    @State private var isShowingDeleteAccountModal = false
 
     var body: some View {
         VStack {
@@ -19,17 +20,44 @@ struct SettingListView: View {
             Button(action: {
                 isShowingLogoutModal = true
             }) {
-                Text("Logout")
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-                    .padding()
+                HStack(spacing: 8) {
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                        .imageScale(.medium)
+                    
+                    Text("Logout")
+                        .font(.body)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
             }
             .buttonStyle(.plain)
             .padding(.horizontal)
             .padding(.bottom, 20)
+            
+            Button(action: {
+                 isShowingDeleteAccountModal = true
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "trash")
+                        .imageScale(.medium)
+                    
+                    Text("Delete Account")
+                        .font(.body)
+                }
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal)
+            .padding(.bottom, 20)
+
         }
         .sheet(isPresented: $isShowingLogoutModal) {
             LogoutConfirmationView(isPresented: $isShowingLogoutModal)
+        }
+        .sheet(isPresented: $isShowingDeleteAccountModal){
+            DeleteConfirmationView(isPresented: $isShowingDeleteAccountModal)
         }
     }
 }
@@ -63,9 +91,9 @@ struct LogoutConfirmationView: View {
                         print("Failed to fetch relays: \(error)")
                     }
                     
-                    deleteAllSwiftData()
+                    appState.deleteAllSwiftData(modelContext: modelContext)
                     
-                    resetState()
+                    appState.resetState()
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.red)
@@ -79,46 +107,59 @@ struct LogoutConfirmationView: View {
         .frame(width: 300)
     }
     
-    private func deleteAllSwiftData() {
-        do {
-            let ownerAccounts = try modelContext.fetch(FetchDescriptor<OwnerAccount>())
-            for account in ownerAccounts {
-                modelContext.delete(account)
-            }
-            
-            let relays = try modelContext.fetch(FetchDescriptor<Relay>())
-            for relay in relays {
-                modelContext.delete(relay)
-            }
-            
-            try modelContext.save()
-        } catch {
-            print("Failed to delete all data: \(error)")
-        }
-    }
     
-    private func resetState() {
-        appState.lastEditGroupMetadataEventId = nil
-        appState.lastCreateGroupMetadataEventId = nil
-        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
-        appState.isSheetPresented = false
-        appState.registeredNsec = false
-        appState.selectedOwnerAccount = nil
-        appState.selectedNip1Relays = []
-        appState.selectedNip29Relay = nil
-        appState.selectedGroup = nil
-        appState.selectedEditingGroup = nil
-        appState.allChatGroup = []
-        appState.allChatMessage = []
-        appState.allUserMetadata = []
-        appState.allGroupAdmin = []
-        appState.allGroupMember = []
-        appState.chatMessageNumResults = 50
-        appState.statuses = [:]
-        appState.ownerPostContents = []
-        appState.profileMetadata = nil
-    }
+    
+    
 }
 
+struct DeleteConfirmationView: View {
+    @Binding var isPresented: Bool
+    @EnvironmentObject private var appState: AppState
+    @Environment(\.modelContext) private var modelContext
+    @State private var confirmationText: String = ""
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Are you sure you want to delete your account? \n Once you delete it, you will never be able to restore it again.")
+                .multilineTextAlignment(.center)
+                .padding()
+            
+            TextField("Type DELETE to confirm", text: $confirmationText)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
+            
+            HStack {
+                Button("Cancel") {
+                    isPresented = false
+                }
+                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .cornerRadius(5)
+                
+                Button("Delete") {
+                    deleteAccount()
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.red)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .cornerRadius(5)
+                .disabled(confirmationText != "DELETE")
+            }
+            .padding(.horizontal)
+        }
+        .padding()
+        .frame(width: 400)
+    }
+    
+    private func deleteAccount() {
+        
+        appState.deleteUserMetadata()
+        appState.lastDeleteUserMetadataModelContext = modelContext
+        
+        isPresented = false
+    }
+}
 
 
