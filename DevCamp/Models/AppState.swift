@@ -23,6 +23,7 @@ class AppState: ObservableObject {
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
     @Published var isSheetPresented: Bool = false
+    @Published var isCreateLoading: Bool = false
     
     @Published var registeredNsec: Bool = true
     @Published var selectedOwnerAccount: OwnerAccount?
@@ -144,13 +145,11 @@ class AppState: ObservableObject {
     @MainActor
     func subscribeGroupAdminAndMembers() async {
         let descriptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip29 })
-        
-        let groupIds = self.allChatGroup.compactMap({ $0.id }).sorted()
         let groupAdminAndMembersSubscription = Subscription(filters: [
             Filter(kinds: [
                 Kind.groupAdmins,
                 Kind.groupMembers
-            ], since: nil, tags: [Tag(id: "d", otherInformation: groupIds)]),
+            ], since: nil),
         ], id: IdSubGroupAdminAndMembers)
         
         if let relay = try? modelContainer?.mainContext.fetch(descriptor).first {
@@ -642,6 +641,7 @@ extension AppState: NostrClientDelegate {
                 {
                     DispatchQueue.main.async {
                         self.isSheetPresented = false
+                        self.isCreateLoading = false
                         self.selectedEditingGroup = nil
                     }
                 }
@@ -659,7 +659,6 @@ extension AppState: NostrClientDelegate {
                             return
                         }
                         try? await Task.sleep(nanoseconds: 1_000_000_000)
-                        await self.subscribeGroupAdminAndMembers()
                         await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, picture: picture, name: name, about: about)
                     }
                 }
