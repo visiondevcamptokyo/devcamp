@@ -22,9 +22,9 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 
 
-## What's the differences from VRChat?
+## VRChatとの違いは何ですか？
 
-The main differences from VRChat are as follows:
-1. It adopts the open protocol called nostr, designed for building decentralized, censorship-resistant social media.
-2. It provides near face-to-face communication through photorealistic avatars.
-3. It has a simple design optimized for communication and collaboration, keeping entertainment elements to a minimum.
+VRChatとの主な違いは以下の通りです。
+- 検閲に強い分散型ソーシャルメディアを構築するためのオープンプロトコルであるnostrを採用しています。
+- フォトリアルなアバターを用いることで、対面に近いコミュニケーションを実現しています。
+- コミュニケーションとコラボレーションに重点を置き、エンターテインメント要素を最小限に抑えたシンプルなデザインを採用しています。

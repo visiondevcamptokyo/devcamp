@@ -21,11 +21,11 @@ hero:
       link: https://github.com/visiondevcamptokyo/devcamp
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Free, Open-Source Software You Control
+    details: Built on Nostr, a decentralized and open social network protocol.
+  - title: Immersive Communication with Spatial Personas
+    details: Photorealistic 3D avatars make you feel like you’re in the same room, even when you’re far apart.
+  - title: Minimal Design to Expand Your Everyday
+    details: We’ve minimized entertainment features to focus on communication and collaboration.
 ---
 
