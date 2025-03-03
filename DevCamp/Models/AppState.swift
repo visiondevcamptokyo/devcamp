@@ -17,10 +17,13 @@ class AppState: ObservableObject {
     /// ID of the last groupEditMetadata event that was sent.
     @Published var lastEditGroupMetadataEventId: String?
     @Published var lastCreateGroupMetadataEventId: String?
+    @Published var lastDeleteUserMetadataEventId: String?
+    @Published var lastDeleteUserMetadataModelContext : ModelContext?
     @Published var createdGroupMetadata: (ownerAccount: OwnerAccount?, groupId: String?, picture: String?, name: String?, about: String?)
     
     /// Flag to close the EditSessionLink sheet once the Relay returns OK
     @Published var isSheetPresented: Bool = false
+    @Published var isCreateLoading: Bool = false
     
     @Published var registeredNsec: Bool = true
     @Published var selectedOwnerAccount: OwnerAccount?
@@ -142,13 +145,11 @@ class AppState: ObservableObject {
     @MainActor
     func subscribeGroupAdminAndMembers() async {
         let descriptor = FetchDescriptor<Relay>(predicate: #Predicate { $0.supportsNip29 })
-        
-        let groupIds = self.allChatGroup.compactMap({ $0.id }).sorted()
         let groupAdminAndMembersSubscription = Subscription(filters: [
             Filter(kinds: [
                 Kind.groupAdmins,
                 Kind.groupMembers
-            ], since: nil, tags: [Tag(id: "d", otherInformation: groupIds)]),
+            ], since: nil),
         ], id: IdSubGroupAdminAndMembers)
         
         if let relay = try? modelContainer?.mainContext.fetch(descriptor).first {
@@ -189,6 +190,48 @@ class AppState: ObservableObject {
         for relayUrl in relayUrls {
             self.nostrClient.remove(relayWithUrl: relayUrl)
         }
+    }
+    
+    @MainActor
+    func deleteAllSwiftData(modelContext: ModelContext) {
+        do {
+            let ownerAccounts = try modelContext.fetch(FetchDescriptor<OwnerAccount>())
+            for account in ownerAccounts {
+                modelContext.delete(account)
+            }
+            
+            let relays = try modelContext.fetch(FetchDescriptor<Relay>())
+            for relay in relays {
+                modelContext.delete(relay)
+            }
+            
+            try modelContext.save()
+        } catch {
+            print("Failed to delete all data: \(error)")
+        }
+    }
+    
+    @MainActor
+    func resetState() {
+        self.lastEditGroupMetadataEventId = nil
+        self.lastCreateGroupMetadataEventId = nil
+        self.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
+        self.isSheetPresented = false
+        self.registeredNsec = false
+        self.selectedOwnerAccount = nil
+        self.selectedNip1Relays = []
+        self.selectedNip29Relay = nil
+        self.selectedGroup = nil
+        self.selectedEditingGroup = nil
+        self.allChatGroup = []
+        self.allChatMessage = []
+        self.allUserMetadata = []
+        self.allGroupAdmin = []
+        self.allGroupMember = []
+        self.chatMessageNumResults = 50
+        self.statuses = [:]
+        self.ownerPostContents = []
+        self.profileMetadata = nil
     }
     
     // MARK: By running this, you can retrieve the data you are subscribed to.
@@ -341,6 +384,57 @@ class AppState: ObservableObject {
         
         do {
             try event.sign(with: key)
+            
+            nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
+        } catch {
+            print("Failed to sign or send event: \(error)")
+        }
+        
+    }
+    
+    // MARK: Function used to delete user data.
+    @MainActor
+    func deleteUserMetadata() {
+        guard let key = self.selectedOwnerAccount?.getKeyPair() else {
+            print("KeyPair not found.")
+            return
+        }
+        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
+        
+        let metadata: [String: String?] = [
+            "name": "",
+            "about": "account deleted",
+            "picture": "",
+            "nip05": "",
+            "display_name": "nobody",
+            "website": "",
+            "banner": "",
+            "bot": "",
+            "lud16": ""
+        ]
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: metadata),
+              let jsonString = String(data: jsonData, encoding: .utf8) else {
+            return
+        }
+        
+        let tags: [Tag] = [
+            Tag(id: "deleted", otherInformation: ["true"]),
+        ]
+        
+        var event = Event(
+            pubkey: self.selectedOwnerAccount?.publicKey ?? "",
+            createdAt: .init(),
+            kind: Kind.setMetadata,
+            tags: tags,
+            content: jsonString
+        )
+        
+        
+        do {
+            try event.sign(with: key)
+            
+            self.lastDeleteUserMetadataEventId = event.id
             
             nostrClient.send(event: event, onlyToRelayUrls: nip1relayUrls)
         } catch {
@@ -547,6 +641,7 @@ extension AppState: NostrClientDelegate {
                 {
                     DispatchQueue.main.async {
                         self.isSheetPresented = false
+                        self.isCreateLoading = false
                         self.selectedEditingGroup = nil
                     }
                 }
@@ -564,10 +659,27 @@ extension AppState: NostrClientDelegate {
                             return
                         }
                         try? await Task.sleep(nanoseconds: 1_000_000_000)
-                        await self.subscribeGroupAdminAndMembers()
                         await self.editGroupMetadata(ownerAccount: ownerAccount, groupId: groupId, picture: picture, name: name, about: about)
                     }
                 }
+            if let lastId = self.lastDeleteUserMetadataEventId,
+               lastId == id,
+               acceptance == true {
+                
+                DispatchQueue.main.async {
+                    guard let modelContext = self.lastDeleteUserMetadataModelContext else { return }
+                    do {
+                        let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+                        let relaysUrl = relays.map(\.url)
+                        self.remove(relaysWithUrl: relaysUrl)
+                    } catch {
+                        print("Failed to fetch relays: \(error)")
+                    }
+                    self.resetState()
+                    self.deleteAllSwiftData(modelContext: modelContext)
+                }
+            }
+            
             case .eose(let id):
                 // EOSE (End of Stored Events Notice) is a mechanism for the Relay to notify that it has finished sending stored data
                 switch id {

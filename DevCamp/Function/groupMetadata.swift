@@ -44,8 +44,14 @@ func handleGroupMetadata(appState: AppState, event: Event) {
     )
     
     DispatchQueue.main.async {
-        appState.allChatGroup.removeAll(where: { $0.id == groupId })
-        appState.allChatGroup.append(metadata)
+        if let index = appState.allChatGroup.firstIndex(where: { $0.id == groupId }) {
+            appState.allChatGroup[index].name = metadata.name
+            appState.allChatGroup[index].picture = metadata.picture
+            appState.allChatGroup[index].about = metadata.about
+            appState.allChatGroup[index].facetime = metadata.facetime
+        } else {
+            appState.allChatGroup.append(metadata)
+        }
         
         // Extract the top 20 groups from the newest group metadata
         let sorted = appState.allChatGroup.sorted { a, b in
