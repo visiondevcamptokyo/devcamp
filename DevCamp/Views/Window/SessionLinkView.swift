@@ -143,6 +143,17 @@ struct SessionLinkView: View {
                     }
                     Spacer()
                     
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Image URL")
+                            .font(.headline)
+                        TextField("https://...", text: $groupImage)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal, 60)
+                    
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {
