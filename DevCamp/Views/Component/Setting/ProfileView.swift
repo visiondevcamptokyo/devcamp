@@ -13,40 +13,56 @@ struct ProfileView: View {
             VStack(alignment: .leading, spacing: 20){
                 Text("Account Settings")
                     .font(.largeTitle.bold())
-                    .padding(.bottom, 20)
                 
                 Group {
-                    if let picture = appState.profileMetadata?.picture,
-                       let url = URL(string: picture) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: 200, height: 200)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 200, height: 200)
-                                case .failure(_):
-                                    Text("No Image")
-                                        .frame(width: 200, height: 200)
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(10)
-                                @unknown default:
-                                    Text("Unknown status")
-                                        .frame(width: 200, height: 200)
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(10)
+                    HStack(alignment: .center, spacing: 30) {
+                        if let picture = appState.profileMetadata?.picture,
+                           let url = URL(string: picture) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(width: 200, height: 200)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 200, height: 200)
+                                    case .failure(_):
+                                        Text("No Image")
+                                            .frame(width: 200, height: 200)
+                                            .background(Color.gray.opacity(0.2))
+                                            .cornerRadius(10)
+                                    @unknown default:
+                                        Text("Unknown status")
+                                            .frame(width: 200, height: 200)
+                                            .background(Color.gray.opacity(0.2))
+                                            .cornerRadius(10)
+                                }
                             }
+                        } else {
+                            Text("No Image")
+                                .frame(width: 200, height: 200)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(10)
                         }
-                    } else {
-                        Text("No Image")
-                            .frame(width: 200, height: 200)
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(10)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Image URL")
+                                .font(.headline)
+                            
+                            TextField("Enter image URL", text: Binding(
+                                get: { appState.profileMetadata?.picture ?? "" },
+                                set: { appState.profileMetadata?.picture = $0 }
+                            ))
+                                .padding()
+                                .frame(width: 500)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(8)
+                        }
+
                     }
-                    
+                                        
                     Text("Public Key")
                         .font(.headline)
                     if let npubkey = try? appState.profileMetadata?.pubkey.bech32FromHex(hrp: "npub") {
