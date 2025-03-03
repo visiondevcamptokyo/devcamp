@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "DevCamp"
-  text: "VisionDevCamp's Digital Gathering Spaces"
+  text: "VisionDevCamp's Virtual Gathering Spaces"
   tagline: A VRChat-like nostr client for visionOS
   image:
     src: /logo.jpg
@@ -26,6 +26,6 @@ features:
   - title: Immersive Communication with Spatial Personas
     details: Photorealistic 3D avatars make you feel like you’re in the same room, even when you’re far apart.
   - title: Minimal Design to Expand Your Everyday
-    details: We’ve minimized entertainment features to focus on communication and collaboration.
+    details: Entertainment features are kept to a minimum, focusing on communication and collaboration.
 ---
 
