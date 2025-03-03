@@ -10,7 +10,7 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 </div>
 
-## The Why?
+## The Why
 
 このプロジェクトが始まった時、オンライン参加者同士が対面と同じ没入感で交流するには相手に連絡先を尋ねてFaceTimeのリンクを共有する必要がありました。
 

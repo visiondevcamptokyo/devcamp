@@ -6,6 +6,9 @@ hero:
   name: "DevCamp"
   text: "VisionDevCamp's Digital Gathering Spaces"
   tagline: A VRChat-like nostr client for visionOS
+  image:
+    src: /logo.jpg
+    alt: DevCamp
   actions:
     - theme: brand
       text: What is DevCamp?
