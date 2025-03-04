@@ -16,7 +16,7 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 When this project first began, online participants had to exchange contact information and share a FaceTime link if they wanted to experience the same level of immersion as meeting in person.
 
-Because of this, DevCamp was created to serve as VisionDevCamp’s digital gathering space and started as an experimental project to explore new ways of collaboration.
+Because of this, DevCamp was created to serve as VisionDevCamp’s online gathering space and started as an experimental project to explore new ways of collaboration.
 
 Although it is not an official app, it has been community-driven, developed as open source, and adopts nostr.
 

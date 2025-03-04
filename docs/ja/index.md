@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "DevCamp"
-  text: "VisionDevCampのバーチャル交流空間"
+  text: "VisionDevCampのオンライン交流空間"
   tagline: visionOS向けのVRChat風nostrクライアント
   image:
     src: /logo.jpg

@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "DevCamp"
-  text: "VisionDevCamp's Virtual Gathering Spaces"
+  text: "VisionDevCamp's Online Gathering Spaces"
   tagline: A VRChat-like nostr client for visionOS
   image:
     src: /logo.jpg
@@ -22,7 +22,7 @@ hero:
 
 features:
   - title: Free, Open-Source Software You Control
-    details: Built on Nostr, a decentralized and open social network protocol.
+    details: Built on nostr, a decentralized and open social network protocol.
   - title: Immersive Communication with Spatial Personas
     details: Photorealistic 3D avatars make you feel like you’re in the same room, even when you’re far apart.
   - title: Minimal Design to Expand Your Everyday
