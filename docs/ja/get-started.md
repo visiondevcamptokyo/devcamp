@@ -1,11 +1,11 @@
-# Get Started
+# DevCampを始める
 
-## Installation
+## インストール
 
 1. TestFlight で DevCamp アプリを入手する
    - https://testflight.apple.com/join/UrHNxNPR
 
-## Quick Start
+## アプリを開始する
 
 1. アプリを開いて、"Create an Account"を選択
    ![alt text](/image.png)
