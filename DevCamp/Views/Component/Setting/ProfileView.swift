@@ -1,10 +1,17 @@
 import SwiftUI
+import PhotosUI
 import SwiftData
 import KeychainAccess
 import Nostr
+import UniformTypeIdentifiers
+
 
 struct ProfileView: View {
+    @State private var showingImagePicker = false
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
     @State private var showSuccessAlert: Bool = false
+    @State private var isUploadingImage = false
 
     @EnvironmentObject private var appState : AppState
     
@@ -16,10 +23,14 @@ struct ProfileView: View {
                 
                 Group {
                     HStack(alignment: .center, spacing: 30) {
-                        if let picture = appState.profileMetadata?.picture,
-                           let url = URL(string: picture) {
-                            AsyncImage(url: url) { phase in
-                                switch phase {
+                        if isUploadingImage {
+                            ProgressView()
+                                .frame(width: 200, height: 200)
+                        } else {
+                            if let picture = appState.profileMetadata?.picture,
+                               let url = URL(string: picture) {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
                                     case .empty:
                                         ProgressView()
                                             .frame(width: 200, height: 200)
@@ -38,13 +49,20 @@ struct ProfileView: View {
                                             .frame(width: 200, height: 200)
                                             .background(Color.gray.opacity(0.2))
                                             .cornerRadius(10)
+                                    }
                                 }
+                                .onTapGesture {
+                                    showingImagePicker = true
+                                }
+                            } else {
+                                Text("No Image")
+                                    .frame(width: 200, height: 200)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        showingImagePicker = true
+                                    }
                             }
-                        } else {
-                            Text("No Image")
-                                .frame(width: 200, height: 200)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(10)
                         }
                         
                         VStack(alignment: .leading, spacing: 8) {
@@ -131,7 +149,43 @@ struct ProfileView: View {
             }
             .padding(32)
         }
-        // 成功アラートを表示
+        .photosPicker(
+            isPresented: $showingImagePicker,
+            selection: $selectedItem,
+            matching: .images,
+            preferredItemEncoding: .automatic,
+            photoLibrary: .shared()
+        )
+        .onChange(of: selectedItem) {
+            isUploadingImage = true
+            
+            guard let newValue = selectedItem else {
+                print("Can't select image")
+                isUploadingImage = false
+                return }
+            
+            let contentType = newValue.supportedContentTypes.first
+            let fileExtension = contentType?.preferredFilenameExtension ?? "jpg"
+
+            Task {
+                if let data = try? await newValue.loadTransferable(type: Data.self) {
+                    selectedImageData = data
+                    do {
+                        if let urlString = try await appState.setPicture(fileData: data, fileExtension: fileExtension) {
+                            DispatchQueue.main.async {
+                                appState.profileMetadata?.picture = urlString
+                            }
+                        } else {
+                            print("Could not parse URL.")
+                        }
+                    } catch {
+                        print("Error during uploading image: \(error)")
+                    }
+                }
+                
+                isUploadingImage = false
+            }
+        }
         .alert("Success", isPresented: $showSuccessAlert) {
             Button("OK", role: .cancel) {}
         } message: {
