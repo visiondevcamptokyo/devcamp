@@ -267,7 +267,115 @@ class AppState: ObservableObject {
                 }
         }
     }
-    
+
+    func setPicture(fileData: Data, fileExtension: String) async throws -> String? {
+        guard let ownerAccount = self.selectedOwnerAccount else {
+            print("No owner account")
+            return nil
+        }
+        guard let key = ownerAccount.getKeyPair() else {
+            print("No keypair found")
+            return nil
+        }
+        
+        let tags: [Tag] = [
+            Tag(id: "u", otherInformation: ["https://nostr.build/api/v2/nip96/upload"]),
+            Tag(id: "method", otherInformation: ["POST"])
+        ]
+
+        var signEvent = Event(
+            pubkey: ownerAccount.publicKey,
+            createdAt: .init(),
+            kind: .custom(27235),
+            tags: tags,
+            content: ""
+        )
+
+        do {
+            try signEvent.sign(with: key)
+        } catch {
+            print("Failed to sign event: \(error.localizedDescription)")
+            return nil
+        }
+
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+
+        let jsonData = try encoder.encode(signEvent)
+        let base64String = jsonData.base64EncodedString()
+
+        guard let url = URL(string: "https://nostr.build/api/v2/nip96/upload") else {
+            print("Invalid URL")
+            return nil
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Nostr \(base64String)", forHTTPHeaderField: "Authorization")
+
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        var httpBody = Data()
+
+        // file
+        httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Disposition: form-data; name=\"file\"; filename=\"upload.\(fileExtension)\"\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Type: image/\(fileExtension)\r\n\r\n".data(using: .utf8)!)
+        httpBody.append(fileData)
+        httpBody.append("\r\n".data(using: .utf8)!)
+
+        // caption
+        httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Disposition: form-data; name=\"caption\"\r\n\r\n".data(using: .utf8)!)
+        httpBody.append("devCampAvatarPicture\r\n".data(using: .utf8)!)
+
+        // expiration
+        httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Disposition: form-data; name=\"expiration\"\r\n\r\n".data(using: .utf8)!)
+        httpBody.append("\r\n".data(using: .utf8)!)
+
+        // content_type
+        httpBody.append("--\(boundary)\r\n".data(using: .utf8)!)
+        httpBody.append("Content-Disposition: form-data; name=\"content_type\"\r\n\r\n".data(using: .utf8)!)
+        httpBody.append("avatar\r\n".data(using: .utf8)!)
+
+        httpBody.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        request.httpBody = httpBody
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard
+            let httpResponse = response as? HTTPURLResponse,
+            (200..<300).contains(httpResponse.statusCode)
+        else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            print("Upload failed. Status code: \(String(describing: statusCode))")
+            if let str = String(data: data, encoding: .utf8) {
+                print("Response: \(str)")
+            }
+            return nil
+        }
+
+        guard !data.isEmpty else {
+            print("No response data or data is empty.")
+            return nil
+        }
+
+        if let topLevel = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+           let nip94Event = topLevel["nip94_event"] as? [String: Any],
+           let tags = nip94Event["tags"] as? [[String]]
+        {
+            if let urlTag = tags.first(where: { $0.first == "url" }), urlTag.count >= 2 {
+                let uploadedUrlString = urlTag[1]
+                return uploadedUrlString
+            }
+        }
+        return nil
+    }
+
+
     // MARK: Function to join a group you haven't joined yet.
     func joinGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
