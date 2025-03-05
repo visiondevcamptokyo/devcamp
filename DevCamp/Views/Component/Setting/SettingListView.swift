@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct SettingListView: View {
+    @EnvironmentObject private var appState: AppState
+    @Environment(\.modelContext) private var modelContext
     @Binding var selectedSetting: SettingItem?
     @State private var isShowingLogoutModal = false
     @State private var isShowingDeleteAccountModal = false
@@ -17,6 +19,27 @@ struct SettingListView: View {
             
             Spacer()
 
+            Button(action: {
+                Task {
+                    await resetState()
+                    await appState.setupYourOwnMetadata()
+                    await appState.subscribeGroupMetadata()
+                }
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "arrow.clockwise")
+                        .imageScale(.medium)
+                    
+                    Text("Reload")
+                        .font(.body)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal)
+            .padding(.bottom, 20)
+            
             Button(action: {
                 isShowingLogoutModal = true
             }) {
@@ -59,6 +82,35 @@ struct SettingListView: View {
         .sheet(isPresented: $isShowingDeleteAccountModal){
             DeleteConfirmationView(isPresented: $isShowingDeleteAccountModal)
         }
+    }
+    
+    private func resetState() async {
+        do {
+            let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+            let relaysUrl = relays.map(\.url)
+            appState.remove(relaysWithUrl: relaysUrl)
+        } catch {
+            print("Failed to fetch relays: \(error)")
+        }
+        
+        appState.lastEditGroupMetadataEventId = nil
+        appState.lastCreateGroupMetadataEventId = nil
+        appState.createdGroupMetadata = (ownerAccount: nil, groupId: nil, picture: nil, name: nil, about: nil)
+        appState.isSheetPresented = false
+        appState.selectedOwnerAccount = nil
+        appState.selectedNip1Relays = []
+        appState.selectedNip29Relay = nil
+        appState.selectedGroup = nil
+        appState.selectedEditingGroup = nil
+        appState.allChatGroup = []
+        appState.allChatMessage = []
+        appState.allUserMetadata = []
+        appState.allGroupAdmin = []
+        appState.allGroupMember = []
+        appState.chatMessageNumResults = 50
+        appState.statuses = [:]
+        appState.ownerPostContents = []
+        appState.profileMetadata = nil
     }
 }
 
