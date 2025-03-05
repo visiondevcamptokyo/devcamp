@@ -33,3 +33,7 @@
 If it's difficult to test with multiple people, you can [schedule a session here](https://cal.com/devcamp).
 
 :::
+
+## Enjoy the session! 
+
+![session](/session2.png)

@@ -33,3 +33,7 @@
 もし複数人でテストをすることが難しい場合は、[こちら](https://cal.com/devcamp)からセッションを予約することができます。
 
 :::
+
+## Enjoy the session! 
+
+![session](/session2.png)

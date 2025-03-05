@@ -10,7 +10,7 @@ DevCampは、visionOS向けのVRChatライクなnostrクライアントです。
 
 </div>
 
-<!-- ![session](/session1.png) -->
+![session](/session1.png)
 
 ## 背景
 

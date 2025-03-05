@@ -12,7 +12,7 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 </div>
 
-<!-- ![session](/session1.png) -->
+![session](/session1.png)
 
 ## The Why
 
