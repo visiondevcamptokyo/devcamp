@@ -6,7 +6,7 @@ DevCampは、visionOS向けのVRChatライクなnostrクライアントです。
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-Just want to try it out? Skip to the [Quickstart](./get-started).
+とにかく試してみたいだけなら、[DevCampを始める](./get-started)をご覧ください。
 
 </div>
 
@@ -18,7 +18,7 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 公式のアプリではないもののコミュニティの主導によりオープンソースで開発されており、nostrを採用しています。
 
-私たちはグローバルな開発者コミュニティとともに、オープンで分散型の開発者エコシステムを醸成することを目指しています。
+グローバルな開発者コミュニティとともに、オープンで分散型の開発者エコシステムを醸成することを目指しています。
 
 
 
