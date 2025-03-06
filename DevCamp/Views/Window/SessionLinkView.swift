@@ -92,41 +92,39 @@ struct SessionLinkView: View {
                 .padding(.top, 10)
                 
                 HStack {
-                    Spacer()
                     
-                    if isUploadingImage {
-                        ProgressView("Uploading...")
-                            .frame(width: 180, height: 180)
-                    } else if let url = URL(string: groupImage), !groupImage.isEmpty {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            case .failure:
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .scaledToFill()
-                            @unknown default:
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .scaledToFill()
-                            }
-                        }
-                        .frame(width: 180, height: 180)
-                        .clipShape(Circle())
-                        .onTapGesture {
-                            selectedImage = nil
-                        }
-                    } else {
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
+                        ZStack {
+                            if isUploadingImage {
+                                ProgressView("Uploading...")
+                                    .frame(width: 180, height: 180)
+                            } else if let url = URL(string: groupImage), !groupImage.isEmpty {
+                                // 画像がある場合は表示
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                    case .failure:
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .scaledToFill()
+                                    @unknown default:
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .scaledToFill()
+                                    }
+                                }
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                            } else {
+                                Rectangle()
                                     .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
                                     .foregroundColor(.gray)
+                                    .frame(width: 180, height: 180)
                                 
                                 VStack {
                                     Image(systemName: "photo")
@@ -139,11 +137,10 @@ struct SessionLinkView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            .frame(width: 180, height: 180)
                         }
+                        .frame(width: 180, height: 180)
                     }
-                    
-                    Spacer()
+                    .buttonStyle(PlainButtonStyle())
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Image URL")
@@ -154,8 +151,9 @@ struct SessionLinkView: View {
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(8)
                     }
-                    .padding(.horizontal, 60)
+                    .padding(.horizontal, 30)
                 }
+                .padding(.leading, 50)
                 
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Session Title")
