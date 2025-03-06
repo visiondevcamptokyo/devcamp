@@ -62,6 +62,9 @@ struct StartView: View {
                 case 1:
                     SignupView(navigationPath: $navigationPath)
                         .navigationBarBackButtonHidden()
+                case 2:
+                    OnboardingView()
+                        .navigationBarBackButtonHidden()
                 default:
                     Text("Something went wrong...")
                 }
