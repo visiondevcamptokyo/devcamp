@@ -76,7 +76,7 @@ struct SignupView: View {
                         ownerAccount.selected = true
                         modelContext.insert(ownerAccount)
                         appState.selectedOwnerAccount = ownerAccount
-
+                        
                         await addRelay()
                         
                         // Wait 1 seconds to be connected to relay
