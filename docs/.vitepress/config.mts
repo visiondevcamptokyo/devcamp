@@ -25,13 +25,13 @@ export default defineConfig({
               { text: 'Get Started', link: '/get-started' }
             ]
           },
-          {
-            text: 'Core Concepts',
-            items: [
-              { text: 'FaceTime and Spatial Persona', link: '/markdown-examples' },
-              { text: 'Nostr protocol', link: '/api-examples' }
-            ]
-          }
+          // {
+          //   text: 'Core Concepts',
+          //   items: [
+          //     { text: 'FaceTime and Spatial Persona', link: '/markdown-examples' },
+          //     { text: 'Nostr protocol', link: '/api-examples' }
+          //   ]
+          // }
         ],
     
         socialLinks: [
@@ -59,13 +59,13 @@ export default defineConfig({
               { text: '始める', link: '/ja/get-started' }
             ]
           },
-          {
-            text: 'Core Concepts',
-            items: [
-              { text: 'FaceTime and Spatial Persona', link: '/markdown-examples' },
-              { text: 'Nostr protocol', link: '/api-examples' }
-            ]
-          }
+          // {
+          //   text: 'Core Concepts',
+          //   items: [
+          //     { text: 'FaceTime and Spatial Persona', link: '/markdown-examples' },
+          //     { text: 'Nostr protocol', link: '/api-examples' }
+          //   ]
+          // }
         ],
     
         socialLinks: [
