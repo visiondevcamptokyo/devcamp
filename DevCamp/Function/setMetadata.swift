@@ -8,8 +8,9 @@ func handleSetMetadata(appState: AppState, event: Event) {
         
         let userMetadata = createUserMetadata(from: event, name: name, about: about, picture: picture, nip05: nip05, displayName: displayName, website: website, banner: banner, bot: bot, lud16: lud16)
 
+        appState.subscribeUserStatusFromPubkey(publicKey: event.pubkey)
+        
         if event.pubkey == appState.selectedOwnerAccount?.publicKey && appState.ownerPostContents.count == 0 {
-            appState.subscribeUserStatusFromPubkey(publicKey: event.pubkey)
             handleSelectedOwnerProfile(
                 pubkey: event.pubkey,
                 name: name,

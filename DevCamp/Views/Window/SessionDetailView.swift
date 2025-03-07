@@ -167,6 +167,10 @@ struct SessionDetailView: View {
                                         Circle()
                                             .foregroundColor(.green)
                                             .frame(width: 8, height: 8)
+                                    } else {
+                                        Circle()
+                                            .foregroundColor(.gray)
+                                            .frame(width: 8, height: 8)
                                     }
                                 }
                                 if let npubkey = try? user.publicKey.bech32FromHex(hrp: "npub") {
@@ -229,6 +233,10 @@ struct SessionDetailView: View {
                                         if user.online == true {
                                             Circle()
                                                 .foregroundColor(.green)
+                                                .frame(width: 8, height: 8)
+                                        } else {
+                                            Circle()
+                                                .foregroundColor(.gray)
                                                 .frame(width: 8, height: 8)
                                         }
                                     }

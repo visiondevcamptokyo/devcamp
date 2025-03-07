@@ -15,7 +15,7 @@ func handleUserStatus(appState: AppState, event: Event) {
             if let index = appState.allUserMetadata.firstIndex(where: { $0.publicKey == event.pubkey }) {
                 appState.allUserMetadata[index].online = Bool(statusInfo) ?? false
             }
-            print("変更されたよ: \(event.content)")
         }
+        print("変更されたよ: \(event.content)")
     }
 }

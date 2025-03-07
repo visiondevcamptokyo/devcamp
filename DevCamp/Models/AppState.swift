@@ -105,7 +105,9 @@ class AppState: ObservableObject {
     }
     
     func subscribeUserStatusFromPubkey(publicKey: String) {
-        let metadataSubscription = Subscription(filters: [Filter(authors: [publicKey], kinds: [Kind.custom(30315)])])
+        print("始まるよ")
+        let halfHourAgo = Timestamp(date: Date().addingTimeInterval(-1800))
+        let metadataSubscription = Subscription(filters: [Filter(authors: [publicKey], kinds: [Kind.custom(30315)], since: halfHourAgo, limit: 3)])
         
         let metadataRelayUrls = self.selectedNip1Relays.map(\.url)
         metadataRelayUrls.forEach { metadataRelayUrl in
