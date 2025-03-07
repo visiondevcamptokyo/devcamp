@@ -104,7 +104,16 @@ class AppState: ObservableObject {
         }
     }
     
-    func getMetadataFromPubkey(publicKey: String) {
+    func subscribeUserStatusFromPubkey(publicKey: String) {
+        let metadataSubscription = Subscription(filters: [Filter(authors: [publicKey], kinds: [Kind.custom(30315)])])
+        
+        let metadataRelayUrls = self.selectedNip1Relays.map(\.url)
+        metadataRelayUrls.forEach { metadataRelayUrl in
+            nostrClient.add(relayWithUrl: metadataRelayUrl, subscriptions: [metadataSubscription] )
+        }
+    }
+    
+    func subscribeMetadataFromPubkey(publicKey: String) {
         let metadataSubscription = Subscription(
             filters: [Filter(authors: [publicKey], kinds: [Kind.setMetadata])],
             id: IdSubPublicMetadata
@@ -255,12 +264,9 @@ class AppState: ObservableObject {
                     
                 case Kind.groupChatMessage:
                     handleGroupChatMessage(appState: self, event: event)
-
-                case Kind.groupAddUser:
-                    print(event)
-                    
-                case Kind.groupRemoveUser:
-                    print(event)
+                
+                case Kind.custom(30315):
+                    handleUserStatus(appState: self, event: event)
                     
                 default:
                     print("event.kind: ", event.kind)
@@ -398,7 +404,7 @@ class AppState: ObservableObject {
         nostrClient.send(event: joinEvent, onlyToRelayUrls: [relayUrl])
     }
     
-    // TODO: Function to leave a group.
+    // Function to leave a group.
     func leaveGroup(ownerAccount: OwnerAccount, group: GroupMetadata) {
         guard let key = ownerAccount.getKeyPair() else { return }
         let relayUrl = group.relayUrl
@@ -406,7 +412,7 @@ class AppState: ObservableObject {
         var leaveEvent = Event(
             pubkey: ownerAccount.publicKey,
             createdAt: .init(),
-            kind: Kind.custom(9022), // 9022 was not defined
+            kind: Kind.custom(9022),
             tags: [
                 Tag(id: "h", otherInformation: groupId),
             ],
@@ -420,6 +426,30 @@ class AppState: ObservableObject {
         }
         
         nostrClient.send(event: leaveEvent, onlyToRelayUrls: [relayUrl])
+    }
+    
+    // Function to change online or not
+    func changeOnlineStatus(status: String) async {
+        guard let ownerAccount = self.selectedOwnerAccount else { return }
+        guard let key = ownerAccount.getKeyPair() else { return }
+        let nip1relayUrls = self.selectedNip1Relays.map { $0.url }
+        var leaveEvent = Event(
+            pubkey: ownerAccount.publicKey,
+            createdAt: .init(),
+            kind: Kind.custom(30315),
+            tags: [
+                Tag(id: "d", otherInformation: "online"),
+            ],
+            content: status
+        )
+        
+        do {
+            try leaveEvent.sign(with: key)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        nostrClient.send(event: leaveEvent, onlyToRelayUrls: nip1relayUrls)
     }
     
     // MARK: Function to send chat messages.
