@@ -94,20 +94,6 @@ struct SessionDetailView: View {
                 
                 
                 HStack(spacing: 20) {
-//                    // MARK: When a SharePlay session has already been established
-//                    if groupActivityManager.isSharePlaying {
-//                        Button(action: {
-//                            Task {
-//                                // End The SharePlay Session
-//                                await groupActivityManager.endSession()
-//                            }
-//                        }) {
-//                            Text("Leave Chat")
-//                                .frame(maxWidth: .infinity)
-//                                .padding()
-//                        }.tint(.red)
-//                        // MARK: When a Shareplay session has not been established
-//                    } else {
                     Button(action: {
                         Task{
                             if let faceTimeLink = group.facetime,
@@ -123,24 +109,6 @@ struct SessionDetailView: View {
                     .disabled(groupStateObserver.isEligibleForGroupSession ||  group.facetime == "")
                     .frame(width: 200, height: 40, alignment: .center)
                     .tint(.green)
-//                    Button(action: {
-//                        Task {
-//                            let activationResult = await DevCampActivity().prepareForActivation()
-//                            switch activationResult {
-//                            case .activationPreferred:
-//                                await groupActivityManager.startSession()
-//                            default:
-//                                break
-//                            }
-//                        }
-//                    }) {
-//                        Text("Shareplay")
-//                            .frame(maxWidth: .infinity)
-//                            .padding()
-//                    }
-//                    .disabled(!groupStateObserver.isEligibleForGroupSession)
-//                    .tint(.green)
-//                    }
                 }
                 .padding(.horizontal)
                 
