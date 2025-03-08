@@ -14,5 +14,6 @@ struct UserMetadata: Encodable, Hashable, Identifiable {
     var bot: Bool?
     var lud16: String?
     var createdAt: Date
+    var online: Bool = false
 }
 

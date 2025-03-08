@@ -27,7 +27,7 @@ func handleGroupAdmins(appState: AppState, event: Event, relayUrl: String) {
     DispatchQueue.main.async {
         if !appState.allGroupAdmin.contains(where: { $0.groupId == admin.groupId }){
             appState.allGroupAdmin.append(admin)
-            appState.getMetadataFromPubkey(publicKey: publicKey)
+            appState.subscribeMetadataFromPubkey(publicKey: publicKey)
         }
     
         if publicKey == appState.selectedOwnerAccount?.publicKey {

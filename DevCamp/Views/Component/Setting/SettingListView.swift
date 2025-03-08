@@ -135,17 +135,22 @@ struct LogoutConfirmationView: View {
                 .cornerRadius(5)
 
                 Button("Logout") {
-                    do {
-                        let relays = try modelContext.fetch(FetchDescriptor<Relay>());
-                        let relaysUrl = relays.map(\.url)
-                        appState.remove(relaysWithUrl: relaysUrl)
-                    } catch {
-                        print("Failed to fetch relays: \(error)")
+                    Task {
+                        await appState.changeOnlineStatus(status: "false")
+                        try? await Task.sleep(nanoseconds: 1_000_000_000)
+                        
+                        do {
+                            let relays = try modelContext.fetch(FetchDescriptor<Relay>());
+                            let relaysUrl = relays.map(\.url)
+                            appState.remove(relaysWithUrl: relaysUrl)
+                        } catch {
+                            print("Failed to fetch relays: \(error)")
+                        }
+                        
+                        appState.deleteAllSwiftData(modelContext: modelContext)
+                        
+                        appState.resetState()
                     }
-                    
-                    appState.deleteAllSwiftData(modelContext: modelContext)
-                    
-                    appState.resetState()
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.red)

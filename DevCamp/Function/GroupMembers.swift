@@ -27,7 +27,7 @@ func handleGroupMembers(appState: AppState, event: Event, relayUrl: String) {
             )
             if !appState.allGroupMember.contains(where: { $0.groupId == groupId && $0.publicKey == publicKey }) {
                 appState.allGroupMember.append(member)
-                appState.getMetadataFromPubkey(publicKey: publicKey)
+                appState.subscribeMetadataFromPubkey(publicKey: publicKey)
             }
             
             if publicKey == appState.selectedOwnerAccount?.publicKey {
