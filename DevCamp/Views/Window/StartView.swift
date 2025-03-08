@@ -22,19 +22,10 @@ struct StartView: View {
             .edgesIgnoringSafeArea(.all)
             .safeAreaInset(edge: .bottom) {
                 VStack(spacing: 8) {
-                    
-                    VStack(spacing: 2) {
-                        Text("Welcome to VisionDevCamp Tokyo!")
-                            .font(.system(size: 56, weight: .black))
-                            .foregroundColor(.white)
-                            .italic()
-                        
-                        Text("An online communication tool using Spatial Persona and SharePlay.")
-                            .font(.subheadline)
-                            .foregroundColor(.white.opacity(0.8))
-                            .offset(x: 0, y: -8)
-                    }
-                    .frame(maxWidth: .infinity)
+                    Text("Welcome to VisionDevCamp Tokyo!")
+                        .font(.system(size: 56, weight: .black))
+                        .foregroundColor(.white)
+                        .italic()
                     
                     LazyVStack {
                         NavigationLink("Signin with Nostr Account", value: 0)
@@ -51,12 +42,20 @@ struct StartView: View {
                     .controlSize(.large)
                     .padding(.horizontal)
                     
-                    Text("By continuing to the next step, you agree to our End User License Agreement")
-                        .font(.footnote)
-                        .foregroundColor(.white)
-                        .onTapGesture {
-                            navigationPath.append(3)
+                    Button(action: {
+                        navigationPath.append(3)
+                    }) {
+                        (
+                            Text("By continuing to the next step, you agree to our ")
+                                .foregroundColor(.white)
+                            +
+                            Text("End User License Agreement")
+                                .underline()
+                                .foregroundColor(.blue)
+                        )
                     }
+                    .buttonStyle(.plain)
+                    .padding(8)
                     Spacer()
                         .frame(height: 5)
                 }
