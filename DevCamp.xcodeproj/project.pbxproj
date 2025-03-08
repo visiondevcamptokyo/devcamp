@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		911549C82D52216800489C30 /* NostrClient in Frameworks */ = {isa = PBXBuildFile; productRef = 911549C72D52216800489C30 /* NostrClient */; };
+		88C8D6EB2D7BD7E300584041 /* NostrClient in Frameworks */ = {isa = PBXBuildFile; productRef = 88C8D6EA2D7BD7E300584041 /* NostrClient */; };
 		911549CB2D5221C300489C30 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 911549CA2D5221C300489C30 /* KeychainAccess */; };
 /* End PBXBuildFile section */
 
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				911549C82D52216800489C30 /* NostrClient in Frameworks */,
+				88C8D6EB2D7BD7E300584041 /* NostrClient in Frameworks */,
 				911549CB2D5221C300489C30 /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,8 +120,8 @@
 			);
 			name = DevCamp;
 			packageProductDependencies = (
-				911549C72D52216800489C30 /* NostrClient */,
 				911549CA2D5221C300489C30 /* KeychainAccess */,
+				88C8D6EA2D7BD7E300584041 /* NostrClient */,
 			);
 			productName = Momiji;
 			productReference = 911549892D521C6D00489C30 /* DevCamp.app */;
@@ -179,8 +179,8 @@
 			mainGroup = 911549802D521C6D00489C30;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */,
 				911549C92D5221C300489C30 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				88C8D6E92D7BD7E300584041 /* XCRemoteSwiftPackageReference "NostrClient" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9115498A2D521C6D00489C30 /* Products */;
@@ -482,9 +482,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */ = {
+		88C8D6E92D7BD7E300584041 /* XCRemoteSwiftPackageReference "NostrClient" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Galaxoid-Labs/NostrClient.git";
+			repositoryURL = "https://github.com/Seinosuke01/NostrClient.git";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -501,9 +501,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		911549C72D52216800489C30 /* NostrClient */ = {
+		88C8D6EA2D7BD7E300584041 /* NostrClient */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 911549C62D52216800489C30 /* XCRemoteSwiftPackageReference "NostrClient" */;
+			package = 88C8D6E92D7BD7E300584041 /* XCRemoteSwiftPackageReference "NostrClient" */;
 			productName = NostrClient;
 		};
 		911549CA2D5221C300489C30 /* KeychainAccess */ = {
