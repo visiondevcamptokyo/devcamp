@@ -105,7 +105,6 @@ class AppState: ObservableObject {
     }
     
     func subscribeUserStatusFromPubkey(publicKey: String) {
-        print("始まるよ")
         let halfHourAgo = Timestamp(date: Date().addingTimeInterval(-1800))
         let metadataSubscription = Subscription(filters: [Filter(authors: [publicKey], kinds: [Kind.custom(30315)], since: halfHourAgo, limit: 3)])
         
