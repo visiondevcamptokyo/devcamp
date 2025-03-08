@@ -11,20 +11,27 @@ struct OnboardingView: View {
                 Spacer()
                 
                 VStack {
-                    Image("Test\(currentPage)")
+                    VStack {
+                        Text(titleText(for: currentPage))
+                            .font(.largeTitle)
+                            .padding(.top, 50)
+                            .padding(.bottom, 8)
+                        
+                        Text(contentText(for: currentPage))
+                            .font(.headline)
+                            .padding(.bottom, 24)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .top)
+                    
+                    Image("Onboarding\(currentPage)")
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 300, maxHeight: 300)
-                    
-                    Text("このページ\(currentPage)はまだ実装していない画面です。")
-                        .font(.headline)
-                        .padding(.top, 8)
+                        .frame(maxWidth: 800)
                 }
                 
                 Spacer()
                 
                 HStack(spacing: 40) {
-                    
                     Button("Back") {
                         if currentPage > 1 {
                             currentPage -= 1
@@ -34,7 +41,7 @@ struct OnboardingView: View {
                     .padding()
                     
                     HStack(spacing: 8) {
-                        ForEach(1...4, id: \.self) { index in
+                        ForEach(1...4, id: \ .self) { index in
                             Circle()
                                 .fill(index == currentPage ? Color.black : Color.gray)
                                 .frame(width: 8, height: 8)
@@ -49,7 +56,7 @@ struct OnboardingView: View {
                         }
                     }
                     .frame(width: 100)
-                    .padding()
+                    .padding(.bottom)
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -62,8 +69,36 @@ struct OnboardingView: View {
                 .scaledToFit()
                 .frame(width: 70, height: 70)
                 .padding([.top, .leading], 16)
+            
+            HStack {
+                Spacer()
+                Button("Skip") {
+                    appState.registeredNsec = true
+                }
+                .frame(width: 100)
+                .padding()
+            }
+            .padding([.top, .trailing], 16)
+        }
+    }
+    
+    private func titleText(for page: Int) -> String {
+        switch page {
+        case 1: return "Start FaceTime"
+        case 2: return "Start FaceTime"
+        case 3: return "Create a session"
+        case 4: return "Public and private key storage"
+        default: return ""
+        }
+    }
+    
+    private func contentText(for page: Int) -> String {
+        switch page {
+        case 1: return "Select the session you want to enter."
+        case 2: return "Press the FaceTime button and you can start FaceTime."
+        case 3: return "You can create a session by pressing the ”Create Session” button on the home screen."
+        case 4: return "Copy and save the public and private keys from the settings screen. Otherwise, this account cannot be restored."
+        default: return ""
         }
     }
 }
-
-
