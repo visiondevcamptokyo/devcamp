@@ -1,5 +1,5 @@
 {
-  "originHash" : "fa2651912cabe6c8aaac184d8744b45052e65040c2fd850f5c9c4dde37fccf16",
+  "originHash" : "c27f36922d39a10e1edcdaf2f0f9154de8645c27c913ef96ce89910df5bbc290",
   "pins" : [
     {
       "identity" : "keychainaccess",
@@ -16,16 +16,16 @@
       "location" : "https://github.com/Galaxoid-Labs/Nostr.git",
       "state" : {
         "branch" : "main",
-        "revision" : "a3f8aa04fc5bd492db126edc721ac9cd3f6fb2f7"
+        "revision" : "0581f42a90e00b5414cf6d3ab4b3f3d66b26cd0d"
       }
     },
     {
       "identity" : "nostrclient",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Galaxoid-Labs/NostrClient.git",
+      "location" : "https://github.com/Seinosuke01/NostrClient.git",
       "state" : {
         "branch" : "main",
-        "revision" : "0e0c4fe1339aeae806c9b8eff208386796fb71aa"
+        "revision" : "4115376ba9ead2ba95e6849d167cb55eb092f056"
       }
     },
     {

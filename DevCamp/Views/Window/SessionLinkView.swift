@@ -1,19 +1,22 @@
 import SwiftUI
 import PhotosUI
+import SwiftData
+import KeychainAccess
+import Nostr
+import UniformTypeIdentifiers
 
 struct SessionLinkView: View {
     @EnvironmentObject private var appState: AppState
-    @State private var sheetDetailForAddSessionLink: InventoryItem?
+    
     @State private var groupName: String = ""
     @State private var groupLink: String = ""
     @State private var maxMembers: String = ""
     @State private var groupDescription: String = ""
+    
     @State private var selectedImage: PhotosPickerItem? = nil
     @State private var groupImage: String = ""
-
-    private var isFaceTimeLinkValid: Bool {
-        groupLink.hasPrefix("https://facetime") || groupLink.isEmpty
-    }
+    
+    @State private var isUploadingImage: Bool = false
 
     var body: some View {
         ZStack {
@@ -45,13 +48,10 @@ struct SessionLinkView: View {
                     Spacer()
                     
                     Button(action: {
-                        guard isFaceTimeLinkValid else {
-                            return
-                        }
+                        guard isFaceTimeLinkValid else { return }
                         
                         appState.isCreateLoading = true
                         Task {
-                            
                             guard let account = appState.selectedOwnerAccount else {
                                 print("ownerAccount not set")
                                 return
@@ -60,7 +60,6 @@ struct SessionLinkView: View {
                                 "description": groupDescription,
                                 "link": groupLink
                             ]
-                            
                             if let jsonAboutData = try? JSONEncoder().encode(aboutData),
                                let jsonAboutString = String(data: jsonAboutData, encoding: .utf8) {
                                 
@@ -89,43 +88,43 @@ struct SessionLinkView: View {
                         Text("Create")
                     }
                     .padding(.bottom)
-                    
                 }
                 .padding(.top, 10)
                 
-                
                 HStack {
                     
-                    Spacer()
-
-                    if let url = URL(string: groupImage) {
-                        AsyncImage(url: url) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            case .failure:
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .scaledToFill()
-                            @unknown default:
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .scaledToFill()
-                            }
-                        }
-                        .frame(width: 180, height: 180)
-                        .clipShape(Circle())
-                    } else {
-                        
-                        PhotosPicker(selection: $selectedImage, matching: .images) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10)
+                    PhotosPicker(selection: $selectedImage, matching: .images) {
+                        ZStack {
+                            if isUploadingImage {
+                                ProgressView("Uploading...")
+                                    .frame(width: 180, height: 180)
+                            } else if let url = URL(string: groupImage), !groupImage.isEmpty {
+                                // 画像がある場合は表示
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                    case .failure:
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .scaledToFill()
+                                    @unknown default:
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .scaledToFill()
+                                    }
+                                }
+                                .frame(width: 180, height: 180)
+                                .clipShape(Circle())
+                            } else {
+                                Rectangle()
                                     .stroke(style: StrokeStyle(lineWidth: 2, dash: [5]))
                                     .foregroundColor(.gray)
+                                    .frame(width: 180, height: 180)
                                 
                                 VStack {
                                     Image(systemName: "photo")
@@ -138,10 +137,10 @@ struct SessionLinkView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
-                            .frame(width: 180, height: 180)
                         }
+                        .frame(width: 180, height: 180)
                     }
-                    Spacer()
+                    .buttonStyle(PlainButtonStyle())
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Image URL")
@@ -152,9 +151,9 @@ struct SessionLinkView: View {
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(8)
                     }
-                    .padding(.horizontal, 60)
-                    
+                    .padding(.horizontal, 30)
                 }
+                .padding(.leading, 50)
                 
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Session Title")
@@ -191,7 +190,6 @@ struct SessionLinkView: View {
                 .padding(.trailing, 60)
                 
                 Spacer()
-                
             }
             .padding()
             .onAppear {
@@ -204,10 +202,8 @@ struct SessionLinkView: View {
             }
             
             if appState.isCreateLoading {
-                // 半透明の背景 + ProgressView
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
-                
                 VStack(spacing: 20) {
                     ProgressView("Loading...")
                         .padding()
@@ -215,16 +211,32 @@ struct SessionLinkView: View {
                 }
             }
         }
+        .onChange(of: selectedImage) {
+            guard let newItem = selectedImage else { return }
+            
+            isUploadingImage = true
+            
+            let contentType = newItem.supportedContentTypes.first
+            let fileExtension = contentType?.preferredFilenameExtension ?? "jpg"
+            
+            Task {
+                do {
+                    if let data = try? await newItem.loadTransferable(type: Data.self) {
+                        if let uploadedUrlString = try await appState.setPicture(fileData: data, fileExtension: fileExtension) {
+                            groupImage = uploadedUrlString
+                        } else {
+                            print("URLをパースできませんでした")
+                        }
+                    }
+                } catch {
+                    print("アップロード中にエラーが発生:", error)
+                }
+                isUploadingImage = false
+            }
+        }
     }
     
-    private func fetchAdminUserMetadata() -> [UserMetadata] {
-        let adminPublicKeys = appState.allGroupAdmin
-            .filter { $0.groupId == appState.selectedGroup?.id }
-            .map { $0.publicKey }
-        let adminMetadatas = appState.allUserMetadata.filter { user in
-            adminPublicKeys.contains(user.publicKey)
-        }
-        return adminMetadatas
+    private var isFaceTimeLinkValid: Bool {
+        groupLink.hasPrefix("https://facetime") || groupLink.isEmpty
     }
 }
-
