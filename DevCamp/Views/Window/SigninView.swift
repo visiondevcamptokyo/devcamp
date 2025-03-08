@@ -77,7 +77,7 @@ struct SigninView: View {
                     navigationPath.append(2)
                 } else {
                     print("Something went wrong")
-                    errorMessage = "No account matching the private key exists"
+                    errorMessage = "No account exists"
                 }
             }) {
                 Text("Import")
