@@ -13,9 +13,9 @@ enum SettingItem: Hashable, CaseIterable, Identifiable {
         case .key:
             return "Key"
         case .metadataRelay:
-            return "MetadataRelay"
+            return "Metadata Relay"
         case .groupRelay:
-            return "GroupRelay"
+            return "Group Relay"
         }
     }
     
