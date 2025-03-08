@@ -145,7 +145,7 @@ class AppState: ObservableObject {
         if let relay = try? modelContainer?.mainContext.fetch(descriptor).first {
             let groupIds = self.allChatGroup.compactMap({ $0.id }).sorted()
             let groupMessageSubscription = Subscription(filters: [
-                Filter(kinds: [Kind.groupChatMessage], since: nil, tags: [Tag(id: "h", otherInformation: groupIds)]),
+                Filter(kinds: [Kind.chatMessage], since: nil, tags: [Tag(id: "h", otherInformation: groupIds)]),
             ], id: IdSubChatMessages)
             
             nostrClient.add(relayWithUrl: relay.url, subscriptions: [groupMessageSubscription])
@@ -264,11 +264,17 @@ class AppState: ObservableObject {
                 case Kind.groupMembers:
                     handleGroupMembers(appState: self, event: event, relayUrl: relayUrl)
                     
-                case Kind.groupChatMessage:
+                case Kind.chatMessage:
                     handleGroupChatMessage(appState: self, event: event)
                 
                 case Kind.custom(30315):
                     handleUserStatus(appState: self, event: event)
+
+                case Kind.groupPutUser:
+                    print(event)
+                    
+                case Kind.groupRemoveUser:
+                    print(event)
                     
                 default:
                     print("event.kind: ", event.kind)
@@ -464,7 +470,7 @@ class AppState: ObservableObject {
         var event = Event(
             pubkey: ownerAccount.publicKey,
             createdAt: .init(),
-            kind: Kind.groupChatMessage,
+            kind: Kind.chatMessage,
             tags: [Tag(id: "h", otherInformation: groupId)],
             content: text
         )
@@ -673,7 +679,7 @@ class AppState: ObservableObject {
         var event = Event(
             pubkey: owner.publicKey,
             createdAt: .init(),
-            kind: Kind.groupAddUser,
+            kind: Kind.groupPutUser,
             tags: [
                 Tag(id: "h", otherInformation: [groupId]),
                 Tag(id: "p", otherInformation: [userPubKey, "admin"])
@@ -702,7 +708,7 @@ class AppState: ObservableObject {
         var event = Event(
             pubkey: owner.publicKey,
             createdAt: .init(),
-            kind: Kind.groupAddUser,
+            kind: Kind.groupPutUser,
             tags: [
                 Tag(id: "h", otherInformation: [groupId]),
                 Tag(id: "p", otherInformation: [userPubKey, "member"])
