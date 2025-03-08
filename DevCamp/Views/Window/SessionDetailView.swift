@@ -285,7 +285,7 @@ struct SessionDetailView: View {
                                         }
                                     }
                             }
-                            .presentationDetents([.medium, .large])  // 必要に応じてサイズ調整
+                            .presentationDetents([.medium, .large])
                         }
                     }}
                     .padding(.horizontal)
@@ -336,7 +336,6 @@ struct UserDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 
-                // ユーザー画像
                 Group {
                     if let pictureURL = user.picture,
                        let url = URL(string: pictureURL) {
@@ -369,12 +368,11 @@ struct UserDetailView: View {
                             .cornerRadius(10)
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)  // 画像を中央に配置
+                .frame(maxWidth: .infinity, alignment: .center)
                 
-                // Public Key
                 Group {
                     Text("Public Key")
-                        .font(.title2.bold()) // タイトルを大きめに
+                        .font(.title2.bold())
                     if let npubkey = try? user.publicKey.bech32FromHex(hrp: "npub") {
                         Text(npubkey)
                             .font(.body)
@@ -389,9 +387,8 @@ struct UserDetailView: View {
                     }
                 }
                 
-                Divider().padding(.vertical, 8) // 区切り線
+                Divider().padding(.vertical, 8)
                 
-                // Name
                 Group {
                     Text("Name")
                         .font(.title2.bold())
@@ -403,7 +400,6 @@ struct UserDetailView: View {
                 
                 Divider().padding(.vertical, 8)
                 
-                // About
                 Group {
                     Text("About")
                         .font(.title2.bold())

@@ -99,7 +99,6 @@ struct SessionLinkView: View {
                                 ProgressView("Uploading...")
                                     .frame(width: 180, height: 180)
                             } else if let url = URL(string: groupImage), !groupImage.isEmpty {
-                                // 画像がある場合は表示
                                 AsyncImage(url: url) { phase in
                                     switch phase {
                                     case .empty:
@@ -225,11 +224,11 @@ struct SessionLinkView: View {
                         if let uploadedUrlString = try await appState.setPicture(fileData: data, fileExtension: fileExtension) {
                             groupImage = uploadedUrlString
                         } else {
-                            print("URLをパースできませんでした")
+                            print("Could not parse URL")
                         }
                     }
                 } catch {
-                    print("アップロード中にエラーが発生:", error)
+                    print("An error occurred during upload:", error)
                 }
                 isUploadingImage = false
             }

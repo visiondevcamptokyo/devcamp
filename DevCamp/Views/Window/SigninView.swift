@@ -7,6 +7,7 @@ struct SigninView: View {
     
     @State private var inputText = ""
     @Binding var navigationPath: NavigationPath
+    @State private var errorMessage: String? = nil
     
     @State private var newOrImport = [0, 1]
     
@@ -41,6 +42,11 @@ struct SigninView: View {
                         .foregroundStyle(.tertiary)
                         .font(.caption)
                         .italic()
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .bold()
+                    }
                 }
                 .frame(maxWidth: 500)
                 .padding(.vertical)
@@ -53,7 +59,7 @@ struct SigninView: View {
             Button("Back") {
                 self.navigationPath.removeLast()
             }
-            Button("Import") {
+            Button(action: {
                 if let ownerAccount = OwnerAccount.restore(withPrivateKeyHexOrNsec: inputText) {
                     if let currentOwners = try? modelContext.fetch(FetchDescriptor<OwnerAccount>()) {
                         for owner in currentOwners {
@@ -66,10 +72,15 @@ struct SigninView: View {
                     Task {
                         await addRelay()
                     }
-                    appState.registeredNsec = true
+                    
+                    errorMessage = nil
+                    navigationPath.append(2)
                 } else {
                     print("Something went wrong")
+                    errorMessage = "No account exists"
                 }
+            }) {
+                Text("Import")
             }
             .buttonStyle(.borderedProminent)
             .disabled(inputText.isEmpty)
@@ -77,7 +88,7 @@ struct SigninView: View {
     }
     
     private func addRelay() async {
-//      Setting up more relays will result in laggy
+//      TODO: Setting up more relays will result in laggy
         let metadataRelayUrls = [
 //            "wss://relay.damus.io",
 //            "wss://nostr.land",

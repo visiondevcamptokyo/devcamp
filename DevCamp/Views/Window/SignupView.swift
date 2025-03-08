@@ -70,41 +70,40 @@ struct SignupView: View {
             Button("Back") {
                 self.navigationPath.removeLast()
             }
-            Button("Create") {
-                Task {
-                    if let ownerAccount = OwnerAccount.createNew() {
-                        ownerAccount.selected = true
-                        modelContext.insert(ownerAccount)
-                        appState.selectedOwnerAccount = ownerAccount
+            NavigationLink("Create", value: 2)
+                .simultaneousGesture(TapGesture().onEnded {
+                    Task {
+                        if let ownerAccount = OwnerAccount.createNew() {
+                            ownerAccount.selected = true
+                            modelContext.insert(ownerAccount)
+                            appState.selectedOwnerAccount = ownerAccount
+                            
+                            await addRelay()
+                            
+                            // Wait 1 seconds to be connected to relay
+                            try? await Task.sleep(nanoseconds: 1_000_000_000)
+                            await appState.editUserMetadata(
+                                name: "",
+                                about: about,
+                                picture: "",
+                                nip05: "",
+                                displayName: name,
+                                website: "",
+                                banner: "",
+                                bot: false,
+                                lud16: ""
+                            )
 
-                        await addRelay()
-                        
-                        // Wait 1 seconds to be connected to relay
-                        try? await Task.sleep(nanoseconds: 1_000_000_000)
-                        await appState.editUserMetadata(
-                            name: "",
-                            about: about,
-                            picture: "",
-                            nip05: "",
-                            displayName: name,
-                            website: "",
-                            banner: "",
-                            bot: false,
-                            lud16: ""
-                        )
-
-                    } else {
-                        print("Failed to create OwnerAccount")
+                        } else {
+                            print("Failed to create OwnerAccount")
+                        }
                     }
-                }
-                appState.registeredNsec = true
-            }
-            .buttonStyle(.borderedProminent)
+                })
         }
     }
     
     private func addRelay() async {
-//      Setting up more relays will result in laggy
+//      TODO: Setting up more relays will result in laggy
         let metadataRelayUrls = [
 //            "wss://relay.damus.io",
 //            "wss://nostr.land",
