@@ -51,7 +51,7 @@ struct StartView: View {
                     .controlSize(.large)
                     .padding(.horizontal)
                     
-                    Text("By continuing to the next step, you agree to the End User License Agreement")
+                    Text("By continuing to the next step, you agree to our End User License Agreement")
                         .font(.footnote)
                         .foregroundColor(.white)
                         .onTapGesture {
