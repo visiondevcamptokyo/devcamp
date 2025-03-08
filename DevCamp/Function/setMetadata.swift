@@ -7,8 +7,6 @@ func handleSetMetadata(appState: AppState, event: Event) {
         let (name, about, picture, nip05, displayName, website, banner, bot, lud16) = metadata
         
         let userMetadata = createUserMetadata(from: event, name: name, about: about, picture: picture, nip05: nip05, displayName: displayName, website: website, banner: banner, bot: bot, lud16: lud16)
-
-        appState.subscribeUserStatusFromPubkey(publicKey: event.pubkey)
         
         if event.pubkey == appState.selectedOwnerAccount?.publicKey && appState.ownerPostContents.count == 0 {
             handleSelectedOwnerProfile(
@@ -90,6 +88,7 @@ private func updateChatMessages(for event: Event, with userMetadata: UserMetadat
             appState.allUserMetadata[index] = userMetadata
         } else {
             appState.allUserMetadata.append(userMetadata)
+            appState.subscribeUserStatusFromPubkey(publicKey: event.pubkey)
         }
         appState.allChatMessage = appState.allChatMessage.map { message in
             var updatedMessage = message
