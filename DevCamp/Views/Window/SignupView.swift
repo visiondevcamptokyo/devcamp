@@ -142,6 +142,5 @@ struct SignupView: View {
         }
         await appState.setupYourOwnMetadata()
         await appState.subscribeGroupMetadata()
-        print("できてるよ")
     }
 }

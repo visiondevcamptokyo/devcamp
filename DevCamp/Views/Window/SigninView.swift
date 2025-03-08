@@ -53,26 +53,26 @@ struct SigninView: View {
             Button("Back") {
                 self.navigationPath.removeLast()
             }
-            Button("Import") {
-                if let ownerAccount = OwnerAccount.restore(withPrivateKeyHexOrNsec: inputText) {
-                    if let currentOwners = try? modelContext.fetch(FetchDescriptor<OwnerAccount>()) {
-                        for owner in currentOwners {
-                            owner.selected = false
+            NavigationLink("Import", value: 2)
+                .buttonStyle(.borderedProminent)
+                .disabled(inputText.isEmpty)
+                .simultaneousGesture(TapGesture().onEnded {
+                    if let ownerAccount = OwnerAccount.restore(withPrivateKeyHexOrNsec: inputText) {
+                        if let currentOwners = try? modelContext.fetch(FetchDescriptor<OwnerAccount>()) {
+                            for owner in currentOwners {
+                                owner.selected = false
+                            }
                         }
+                        ownerAccount.selected = true
+                        modelContext.insert(ownerAccount)
+                        appState.selectedOwnerAccount = ownerAccount
+                        Task {
+                            await addRelay()
+                        }
+                    } else {
+                        print("Something went wrong")
                     }
-                    ownerAccount.selected = true
-                    modelContext.insert(ownerAccount)
-                    appState.selectedOwnerAccount = ownerAccount
-                    Task {
-                        await addRelay()
-                    }
-                    appState.registeredNsec = true
-                } else {
-                    print("Something went wrong")
-                }
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(inputText.isEmpty)
+                })
         }
     }
     
