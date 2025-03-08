@@ -7,6 +7,7 @@ struct SigninView: View {
     
     @State private var inputText = ""
     @Binding var navigationPath: NavigationPath
+    @State private var errorMessage: String? = nil
     
     @State private var newOrImport = [0, 1]
     
@@ -41,6 +42,11 @@ struct SigninView: View {
                         .foregroundStyle(.tertiary)
                         .font(.caption)
                         .italic()
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .bold()
+                    }
                 }
                 .frame(maxWidth: 500)
                 .padding(.vertical)
@@ -53,31 +59,36 @@ struct SigninView: View {
             Button("Back") {
                 self.navigationPath.removeLast()
             }
-            NavigationLink("Import", value: 2)
-                .buttonStyle(.borderedProminent)
-                .disabled(inputText.isEmpty)
-                .simultaneousGesture(TapGesture().onEnded {
-                    if let ownerAccount = OwnerAccount.restore(withPrivateKeyHexOrNsec: inputText) {
-                        if let currentOwners = try? modelContext.fetch(FetchDescriptor<OwnerAccount>()) {
-                            for owner in currentOwners {
-                                owner.selected = false
-                            }
+            Button(action: {
+                if let ownerAccount = OwnerAccount.restore(withPrivateKeyHexOrNsec: inputText) {
+                    if let currentOwners = try? modelContext.fetch(FetchDescriptor<OwnerAccount>()) {
+                        for owner in currentOwners {
+                            owner.selected = false
                         }
-                        ownerAccount.selected = true
-                        modelContext.insert(ownerAccount)
-                        appState.selectedOwnerAccount = ownerAccount
-                        Task {
-                            await addRelay()
-                        }
-                    } else {
-                        print("Something went wrong")
                     }
-                })
+                    ownerAccount.selected = true
+                    modelContext.insert(ownerAccount)
+                    appState.selectedOwnerAccount = ownerAccount
+                    Task {
+                        await addRelay()
+                    }
+                    
+                    errorMessage = nil
+                    navigationPath.append(2)
+                } else {
+                    print("Something went wrong")
+                    errorMessage = "No account matching the private key exists"
+                }
+            }) {
+                Text("Import")
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(inputText.isEmpty)
         }
     }
     
     private func addRelay() async {
-//      Setting up more relays will result in laggy
+//      TODO: Setting up more relays will result in laggy
         let metadataRelayUrls = [
 //            "wss://relay.damus.io",
 //            "wss://nostr.land",
