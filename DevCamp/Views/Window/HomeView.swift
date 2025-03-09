@@ -73,20 +73,24 @@ struct HomeView: View {
                     
                     Spacer().frame(height: 30)
                     
-                    Text("Sessions you belong to")
-                        .font(.title2.bold())
-                        .padding(.leading, 16)
-                    
-                    GroupListView(groups: filteredOwnedGroups, groupActivityManager: groupActivityManager)
+                    if filteredOwnedGroups != [] {
+                        Text("Sessions you belong to")
+                            .font(.title2.bold())
+                            .padding(.leading, 16)
+                        
+                        GroupListView(groups: filteredOwnedGroups, groupActivityManager: groupActivityManager)
+                    }
                     
                     Spacer().frame(height: 30)
                     
-                    Text("Sessions you are an administrator of")
-                        .font(.title2.bold())
-                        .padding(.leading, 16)
-                    
-                    GroupListView(groups: filteredAdminGroups, groupActivityManager: groupActivityManager)
-                    
+                    if filteredAdminGroups != [] {
+                        Text("Sessions you are an administrator of")
+                            .font(.title2.bold())
+                            .padding(.leading, 16)
+                        
+                        GroupListView(groups: filteredAdminGroups, groupActivityManager: groupActivityManager)
+                    }
+
                     Spacer()
                 }
             }
