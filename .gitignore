@@ -66,3 +66,5 @@ fastlane/test_output
 ## VitePress
 docs/.vitepress/dist
 docs/.vitepress/cache
+
+node_modules/

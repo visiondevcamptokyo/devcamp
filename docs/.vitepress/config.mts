@@ -3,6 +3,9 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "DevCamp",
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+  ],
   description: "VisionDevCamp's Digital Gathering Spaces",
   locales: {
     root: {
