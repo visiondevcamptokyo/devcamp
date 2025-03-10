@@ -28,6 +28,19 @@ export default defineConfig({
               { text: 'Get Started', link: '/get-started' }
             ]
           },
+          {
+            text: 'Tutorial',
+            items: [
+              { text: 'Create a Session', link: '/create-session' },
+              { text: 'Share Screen', link: '/share-screen' }
+            ]
+          },
+          {
+            text: '3/16 ideathon',
+            items: [
+              { text: 'Timeline', link: '/ideathon' }
+            ]
+          }
           // {
           //   text: 'Core Concepts',
           //   items: [
@@ -59,9 +72,22 @@ export default defineConfig({
             text: 'Introduction',
             items: [
               { text: 'DevCampとは?', link: '/ja/what-is-devcamp' },
-              { text: '始める', link: '/ja/get-started' }
+              { text: '始める', link: '/ja/get-started' },
             ]
           },
+          {
+            text: 'チュートリアル',
+            items: [
+              { text: 'セッションを作成する', link: '/ja/create-session' },
+              { text: "画面を共有する", link: '/ja/share-screen' }
+            ]
+          },
+          {
+            text: '3/16 アイデアソン',
+            items: [
+              { text: '当日の流れ', link: '/ja/ideathon' }
+            ]
+          }
           // {
           //   text: 'Core Concepts',
           //   items: [
