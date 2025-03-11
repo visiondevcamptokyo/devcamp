@@ -27,11 +27,6 @@ DevCampでは、参加するセッションを自由に作成することが可�
 
 ![create-a-session](/create-a-session2.png)
 
-## 管理者としてできること
-- セッション参加者の管理
-- セッション内容の編集・更新
-- セッションへの招待リンクの発行
-
 ## 📢 サポート
 ご不明な点があれば、お気軽にお問い合わせください。
 - [Discord](https://discord.gg/t5X6KZruQQ)

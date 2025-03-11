@@ -26,14 +26,6 @@ After creating the session, verify that it has been correctly created:
 - Select the sessions listed under **Latest Sessions** to ensure that the session for which you are the administrator has been correctly created.
 ![create-a-session](/create-a-session2.png)
 
-## Admin Capabilities
-
-As a session administrator, you can:
-
-- Manage participants.
-- Edit or update session details.
-- Generate invitation links for your session.
-
 ## 📢 Support
 
 If you have any questions, please feel free to contact us.
