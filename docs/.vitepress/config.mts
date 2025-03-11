@@ -36,9 +36,10 @@ export default defineConfig({
             ]
           },
           {
-            text: '3/16 ideathon',
+            text: '3/16 Ideathon',
             items: [
-              { text: 'Timeline', link: '/ideathon' }
+              { text: 'Overview', link: '/ideathon-overview' },
+              { text: 'For Online Participants', link: '/ideathon-online' }
             ]
           }
           // {
@@ -85,7 +86,8 @@ export default defineConfig({
           {
             text: '3/16 アイデアソン',
             items: [
-              { text: '当日の流れ', link: '/ja/ideathon' }
+              { text: '概要', link: '/ja/ideathon-overview' },
+              { text: 'オンライン参加者の方', link: '/ja/ideathon-online' }
             ]
           }
           // {
