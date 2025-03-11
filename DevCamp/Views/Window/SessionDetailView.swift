@@ -86,9 +86,10 @@ struct SessionDetailView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
-                    Text(group.about ?? "")
-                        .font(.body)
-                    
+                    ScrollView {
+                        Text(group.about ?? "")
+                            .font(.body)
+                    }
                 }
                 .padding(.horizontal)
                 
