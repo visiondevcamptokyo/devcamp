@@ -10,7 +10,7 @@ During a FaceTime call, follow these steps to share your screen:
 
 ![share-screen](/share-screen1.png)
 
-2. Select "**Share Entire Window**" from the available options.
+2. Select "**Share My Entire Window**" from the available options.
 
 ![share-screen](/share-screen2.png)
 

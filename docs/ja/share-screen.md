@@ -8,10 +8,10 @@ FaceTime通話中に、以下の手順で画面を共有できます。
 
 1.通話中に表示されるメニューから、「**共有されていません**」ボタンを選択します。
 
-![share-screen](/share-screen1.png)
+![share-screen](/share-screen-ja1.png)
 
 2.表示されるオプションから「**ウィンドウ全体を共有**」を選択します。
-![create-a-session](/share-screen2.png)
+![create-a-session](/share-screen-ja2.png)
 
 これで自分の画面に表示されているコンテンツをセッションの参加者と共有することができます。
 
