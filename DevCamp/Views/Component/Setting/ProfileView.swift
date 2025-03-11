@@ -8,6 +8,8 @@ import UniformTypeIdentifiers
 
 struct ProfileView: View {
     @State private var showingImagePicker = false
+    @State private var showPersonaCameraView = false
+    @State private var capturedPersonaImage: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     @State private var showSuccessAlert: Bool = false
@@ -51,17 +53,11 @@ struct ProfileView: View {
                                             .cornerRadius(10)
                                     }
                                 }
-                                .onTapGesture {
-                                    showingImagePicker = true
-                                }
                             } else {
                                 Text("No Image")
                                     .frame(width: 200, height: 200)
                                     .background(Color.gray.opacity(0.2))
                                     .cornerRadius(10)
-                                    .onTapGesture {
-                                        showingImagePicker = true
-                                    }
                             }
                         }
                         
@@ -77,8 +73,27 @@ struct ProfileView: View {
                                 .frame(width: 500)
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(8)
+                            
+                            HStack(spacing: 16) {
+                                Button {
+                                    showPersonaCameraView = true
+                                } label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "camera.fill")
+                                        Text("Capture Persona")
+                                    }
+                                }
+                                Button {
+                                    showingImagePicker = true
+                                } label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "photo.fill")
+                                        Text("Select from Album")
+                                    }
+                                }
+                            }
+                            .padding(.top, 4)
                         }
-
                     }
                                         
                     Text("Public Key")
@@ -149,6 +164,33 @@ struct ProfileView: View {
             }
             .padding(32)
         }
+        .sheet(isPresented: $showPersonaCameraView) {
+            PersonaCameraViewWrapper { image in
+                isUploadingImage = true
+                Task {
+                    do {
+                        guard let data = image.jpegData(compressionQuality: 0.8) else {
+                            print("Could not convert UIImage to Data.")
+                            isUploadingImage = false
+                            return
+                        }
+                        
+                        let fileExtension = "jpg"
+                        if let urlString = try await appState.setPicture(fileData: data, fileExtension: fileExtension) {
+                            DispatchQueue.main.async {
+                                appState.profileMetadata?.picture = urlString
+                            }
+                        } else {
+                            print("Could not parse URL.")
+                        }
+                    } catch {
+                        print("Error during uploading image: \(error)")
+                    }
+                    isUploadingImage = false
+                }
+            }
+        }
+
         .photosPicker(
             isPresented: $showingImagePicker,
             selection: $selectedItem,
@@ -193,3 +235,4 @@ struct ProfileView: View {
         }
     }
 }
+
