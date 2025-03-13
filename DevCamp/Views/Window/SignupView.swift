@@ -110,7 +110,7 @@ struct SignupView: View {
             "wss://yabu.me",
 //            "wss://nos.lol",
         ]
-        let nip29relayUrl = "wss://groups.0xchat.com"
+        let nip29relayUrl = "wss://groups.yugoatobe.com"
         
         metadataRelayUrls.forEach { metadataRelayUrl in
             if let metadataRelay = Relay.createNew(withUrl: metadataRelayUrl) {
