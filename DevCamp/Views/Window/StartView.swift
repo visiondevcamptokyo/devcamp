@@ -75,6 +75,9 @@ struct StartView: View {
                         .navigationBarBackButtonHidden()
                 case 3:
                     EULAView()
+                case 4:
+                    SetIconView()
+                        .navigationBarBackButtonHidden()
                 default:
                     Text("Something went wrong...")
                 }
