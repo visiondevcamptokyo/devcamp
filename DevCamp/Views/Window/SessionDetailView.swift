@@ -88,7 +88,6 @@ struct SessionDetailView: View {
                     }
                     Text(group.about ?? "")
                         .font(.body)
-                    
                 }
                 .padding(.horizontal)
                 
