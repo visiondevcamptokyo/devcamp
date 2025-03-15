@@ -2,6 +2,22 @@
 
 This page explains how to use DevCamp according to the Ideathon schedule.
 
+<div class="tip custom-block" style="padding-top: 8px">
+
+For details about DevCamp, please refer to [this page](./what-is-devcamp.md)
+
+</div>
+
+## Setting up DevCamp
+Please complete your registration by following the instructions on [this page](./get-started.md)
+::: warning Note
+If you haven’t created Persona yet, please set one up in your system settings beforehand.
+:::
+
+::: info For Nostr Users
+If you already have a Nostr account, you can log in using your existing account instead of registering a new one.
+:::
+
 ## Online Event Flow
 
 ### 12:30–13:00 | Reception
