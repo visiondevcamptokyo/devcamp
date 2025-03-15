@@ -38,7 +38,7 @@ https://lu.ma/7zomrwt6
 
 - Workshop teams will be randomly assigned.
 - Each team is expected to have **a maximum of 5 members**.
-- If you own an Apple Vision Pro, please update your visionOS to **version 2.3** before the event.
+- If you have an Apple Vision Pro, please update your visionOS to **version 2.2** or higher before the event.
 
 ## 📢 Support
 

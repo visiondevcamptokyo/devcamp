@@ -15,7 +15,7 @@ If you haven’t created Persona yet, please set one up in your system settings 
 :::
 
 ::: info For Nostr Users
-If you already have a Nostr account, you can log in using your existing account instead of registering a new one.
+If you already have a Nostr account, you can log in using it instead of registering a new one.
 :::
 
 ## Online Event Flow
@@ -40,9 +40,9 @@ If you already have a Nostr account, you can log in using your existing account 
 ### 14:00–14:15 | Self-Introductions
 - Each group should conduct self-introductions.
 
-### 💡 14:15–15:45 | Idea Workshop
+### 14:15–15:45 | Idea Workshop
 - **Brainstorming**: The event staff will check progress every 30 minutes.
-- **Idea Organization & Creation**: We recommend using tools such as Miro.
+- **Idea Organization & Creation**: We recommend using Free Form, which is installed by default in Apple Vision Pro.
 ::: warning
 To facilitate smooth communication, please create a persona in advance.
 :::
