@@ -13,7 +13,21 @@
 2. Enter your name and other details, then select "Create."  
    ![start-the-app](/start-the-app2.png)
 
-3. Select the session you want to join.  
+3. On the Settings screen, set your icon.
+
+You can choose either "Capture Persona" or "Select from Album."
+   ![start-the-app](/start-the-app3.png)
+
+::: danger 🚨 If your registration details do not appear after signing up
+This may be caused by an issue with the app. In this case, please contact us via [Discord](https://discord.gg/t5X6KZruQQ) or email (seinosuke.saito520@gmail.com) with the following information:
+
+- The email address associated with your Apple account
+- A note indicating that your registration was unsuccessful
+
+We will grant you access as an internal tester for the new version of DevCamp.
+:::
+
+4. Select the session you want to join.  
    ![start-the-app](/start-the-app3.png)
 
 ## Launch FaceTime

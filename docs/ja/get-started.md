@@ -13,8 +13,23 @@
 2. 名前などを入力して"Create"を選択。
    ![start-the-app](/start-the-app2.png)
 
-3. 参加するセッションを選択する。
+3. Setting画面から、アイコンを設定する。
+
+"Capture Persona"と"Select from Album"から選択することができます。
    ![start-the-app](/start-the-app3.png)
+
+::: danger 🚨 新規登録時の内容が表示されない場合
+アプリ側の不具合の可能性があります。その際は、お手数ですが [Discord](https://discord.gg/t5X6KZruQQ) またはメール（seinosuke.saito520@gmail.com）で
+- Apple Accountに登録しているメールアドレス
+- 登録が完了していない旨
+
+をお知らせください。
+
+新バージョンのTestFlight内部テスターの権限を付与いたします。
+:::
+
+4. 参加するセッションを選択する。
+   ![start-the-app](/start-the-app4.png)
 
 ## FaceTimeを起動する
 
