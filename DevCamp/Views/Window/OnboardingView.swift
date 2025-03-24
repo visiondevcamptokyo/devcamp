@@ -54,15 +54,18 @@ struct OnboardingView: View {
                         }
                     }
                     
-                    Button(currentPage < 5 ? "Next" : "End") {
-                        if currentPage < 5 {
+                    if currentPage < 5 {
+                        Button("Next") {
                             currentPage += 1
-                        } else {
-                            appState.registeredNsec = true
                         }
+                        .frame(width: 100)
+                        .padding(.bottom)
+                    } else {
+                        NavigationLink("End", value: 4)
+                            .buttonStyle(.borderedProminent)
+                            .frame(width: 100)
+                            .padding(.bottom)
                     }
-                    .frame(width: 100)
-                    .padding(.bottom)
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
