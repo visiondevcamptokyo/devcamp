@@ -29,7 +29,9 @@ struct MetadataRelayView: View {
             relayIcon
             relayDescription
             Divider()
-            relayInput
+            if metadataRelays.isEmpty {
+                relayInput
+            }
             relayList
         }
         .padding(.top, 32)
@@ -74,25 +76,27 @@ struct MetadataRelayView: View {
     
     private var relayList: some View {
         List {
-            Section("Connected Metadata Relays") {
-                ForEach(metadataRelays) { relay in
-                    HStack {
-                        Text(relay.url)
-                        Spacer()
-                        Button(action: {
-                            Task {
-                                await removeRelay(relay: relay)
+            if metadataRelays != [] {
+                Section("Connected Metadata Relays") {
+                    ForEach(metadataRelays) { relay in
+                        HStack {
+                            Text(relay.url)
+                            Spacer()
+                            Button(action: {
+                                Task {
+                                    await removeRelay(relay: relay)
+                                }
+                            }) {
+                                Image(systemName: "minus.circle.fill")
+                                    .imageScale(.large)
+                                    .foregroundStyle(.red)
                             }
-                        }) {
-                            Image(systemName: "minus.circle.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.red)
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
-            if filteredSuggestedRelays != [] {
+            if filteredSuggestedRelays != [] && metadataRelays.isEmpty {
                 Section("Suggested Metadata Relays") {
                     ForEach(filteredSuggestedRelays, id: \.self) { (relay: String) in
                         HStack {
