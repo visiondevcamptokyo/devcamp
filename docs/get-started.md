@@ -36,4 +36,4 @@ If it's difficult to test with multiple people, you can [schedule a session here
 
 ## Enjoy the session! 
 
-![session](/session2.png)
+![session](/session1.png)

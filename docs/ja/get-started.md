@@ -36,4 +36,4 @@
 
 ## Enjoy the session! 
 
-![session](/session2.png)
+![session](/session1.png)
