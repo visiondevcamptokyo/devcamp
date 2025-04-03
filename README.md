@@ -1,7 +1,7 @@
 # DevCamp
 A VRChat-like [nostr](https://github.com/nostr-protocol/nostr) client for visionOS.
 
-![session-image](https://github.com/user-attachments/assets/0bc6a1b8-7b75-426b-b251-5f600f87494e)
+![screen-image](https://github.com/user-attachments/assets/b580ea4e-18f0-44fc-aa29-0615f44b2a9e)
 ![online_venue2](https://github.com/user-attachments/assets/18f53c0f-f0f8-4773-a0bf-fb7f81f70c6c)
 
 DevCamp is an experimental visionOS application created to serve as [VisionDevCamp Tokyo](https://www.vdctokyo.org/en)’s digital gathering space.
