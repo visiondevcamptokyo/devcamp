@@ -3,7 +3,7 @@ A VRChat-like [Nostr](https://github.com/nostr-protocol/nostr) client for vision
 
 ![screen-image](https://github.com/user-attachments/assets/14581626-a8a0-406b-90e0-025abbc1b5d4)
 
-DevCamp is an experimental visionOS application created to serve as [VisionDevCamp](https://www.vdctokyo.org/en)’s digital gathering space.
+DevCamp is an experimental visionOS application created to serve as [VisionDevCamp Tokyo 2025](https://www.vdctokyo.org/en)’s digital gathering space.
 Despite not being an official app, it’s born from a global developer community and aims to nurture an open, decentralized developer ecosystem.
 With photorealistic avatars and an immersive shared space, DevCamp brings the feeling of face-to-face communication anywhere in the world, no matter where you are.
 
