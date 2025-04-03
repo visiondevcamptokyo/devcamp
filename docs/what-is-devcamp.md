@@ -14,9 +14,9 @@ Just want to try it out? Skip to the [Quickstart](./get-started).
 
 ![session](/session3.png)
 
-## The Why
+## Background
 
-When planning to host [VisionDevCamp Tokyo 2025](https://www.vdctokyo.org/), we thought how wonderful it would be to provide an online venue where participants could interact as if they were face-to-face, allowing anyone from around the world to join the hackathon.
+When we first started planning [VisionDevCamp Tokyo 2025](https://www.vdctokyo.org/), we thought how wonderful it would be if we could provide an online venue where people could interact as if they were face-to-face, allowing participants from anywhere in the world to join the hackathon.
 
 While Spatial Personas offer immersive face-to-face-like interactions, online participants needed to exchange contact information and share a FaceTime link to interact using them.
 
