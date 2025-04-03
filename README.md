@@ -1,5 +1,5 @@
 # DevCamp
-A VRChat-like [Nostr](https://github.com/nostr-protocol/nostr) client for visionOS.
+A VRChat-like [nostr](https://github.com/nostr-protocol/nostr) client for visionOS.
 
 ![screen-image](https://github.com/user-attachments/assets/14581626-a8a0-406b-90e0-025abbc1b5d4)
 
@@ -11,7 +11,7 @@ With photorealistic avatars and an immersive shared space, DevCamp brings the fe
 ![online_venue2](https://github.com/user-attachments/assets/18f53c0f-f0f8-4773-a0bf-fb7f81f70c6c)
 
 The main differences from VRChat are as follows:
-- It adopts the open protocol called Nostr, designed for building decentralized, censorship-resistant social media.
+- It adopts the open protocol called nostr, designed for building decentralized, censorship-resistant social media.
 - It provides near face-to-face communication through photorealistic avatars.
 - It has a simple design optimized for communication and collaboration, keeping entertainment elements to a minimum.
 
