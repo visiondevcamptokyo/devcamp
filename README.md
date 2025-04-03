@@ -1,20 +1,19 @@
-# DevCamp - A VRChat-like [nostr](https://github.com/nostr-protocol/nostr) client for visionOS.
+# DevCamp
+A VRChat-like [Nostr](https://github.com/nostr-protocol/nostr) client for visionOS.
+
+![session-image](https://github.com/user-attachments/assets/0bc6a1b8-7b75-426b-b251-5f600f87494e)
+![image](https://github.com/user-attachments/assets/95a33fbf-36e7-4cc1-bc80-8b368ed6faf8)
 
 DevCamp is an experimental visionOS application created to serve as [VisionDevCamp](https://www.vdctokyo.org/en)’s digital gathering space.
-
 Despite not being an official app, it’s born from a global developer community and aims to nurture an open, decentralized developer ecosystem.
-
 With photorealistic avatars and an immersive shared space, DevCamp brings the feeling of face-to-face communication anywhere in the world, no matter where you are.
 
-<img width="1101" alt="Screenshot 2025-02-10 at 3 38 19 PM" src="https://github.com/user-attachments/assets/8800bad0-640e-4c69-ba07-d2c0a0c1ed0a" />
+![screen-image](https://github.com/user-attachments/assets/14581626-a8a0-406b-90e0-025abbc1b5d4)
 
 The main differences from VRChat are as follows:
-
-It adopts the open protocol called nostr, designed for building decentralized, censorship-resistant social media.
-
-It provides near face-to-face communication through photorealistic avatars.
-
-It has a simple design optimized for communication and collaboration, keeping entertainment elements to a minimum.
+- It adopts the open protocol called Nostr, designed for building decentralized, censorship-resistant social media.
+- It provides near face-to-face communication through photorealistic avatars.
+- It has a simple design optimized for communication and collaboration, keeping entertainment elements to a minimum.
 
 ## Getting started on DevCamp
 1. Get the DevCamp app on the visionOS App Store: https://testflight.apple.com/join/UrHNxNPR
