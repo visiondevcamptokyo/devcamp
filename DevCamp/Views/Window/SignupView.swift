@@ -105,7 +105,7 @@ struct SignupView: View {
     private func addRelay() async {
 //      TODO: Setting up more relays will result in laggy
         let metadataRelayUrls = [
-//            "wss://relay.damus.io",
+            "wss://relay.damus.io",
 //            "wss://nostr.land",
             "wss://yabu.me",
 //            "wss://nos.lol",
