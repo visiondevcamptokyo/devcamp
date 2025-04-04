@@ -14,7 +14,7 @@ struct StartView: View {
             ZStack(alignment: .center) {
                 Color.clear
                     .overlay(alignment: .top) {
-                        Image("momiji_bg1")
+                        Image("cherry_blossom")
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                     }
@@ -36,21 +36,17 @@ struct StartView: View {
                     }
                     .frame(maxWidth: .infinity)
                     
-                    LazyVStack {
-                        NavigationLink("Signin with Nostr Account", value: 0)
+                    HStack(spacing: 32) {
+                        NavigationLink("Signin", value: 0)
+                            .buttonStyle(.borderedProminent)
+                        NavigationLink("Signup", value: 1)
                             .buttonStyle(.borderedProminent)
                     }
                     .controlSize(.large)
                     .padding(.horizontal)
                     .padding(.bottom)
-                    
-                    LazyVStack {
-                        NavigationLink("Create an Account", value: 1)
-                            .buttonStyle(.borderedProminent)
-                    }
-                    .controlSize(.large)
-                    .padding(.horizontal)
-                    
+                    .frame(maxWidth: .infinity, alignment: .center)
+
                     Text("By continuing to the next step, you agree to our End User License Agreement")
                         .font(.footnote)
                         .foregroundColor(.white)
@@ -60,7 +56,7 @@ struct StartView: View {
                     Spacer()
                         .frame(height: 5)
                 }
-                .background(Color.black)
+                .background(Color.black.opacity(0.7))
             }
             .navigationDestination(for: Int.self) { value in
                 switch value {
@@ -146,4 +142,3 @@ struct EULAView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
