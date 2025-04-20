@@ -34,6 +34,8 @@ struct DevCampApp: App {
                     appState.modelContainer = sharedModelContainer
                     await appState.setupYourOwnMetadata()
                     await appState.subscribeGroupMetadata()
+                    try? await Task.sleep(nanoseconds: 5 * 1_000_000_000)
+                    await appState.changeOnlineStatus(status: "true")
                 }
                 .onChange(of: groupStateObserver.isEligibleForGroupSession) { oldValue, newValue in
                     if newValue {
